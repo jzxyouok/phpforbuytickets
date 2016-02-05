@@ -1,0 +1,706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="zh-CN"><head profile="http://gmpg.org/xfn/11">
+<meta property="qc:admins" content="1161332111106375">	
+<meta property="wb:webmaster" content="b1906381053a1c93">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="canonical" href="http://blog.51yip.com/php/1165.html"><meta name="keywords" content="php,__CLASS__,__DIR__,__FILE__,__FUNCTION__,__METHOD__,__STATIC__">
+<meta name="description" content="php __FILE__,__CLASS__等魔术变量,及实例">
+	<title>  php __FILE__,__CLASS__等魔术变量,及实例«海底苍鹰(tank)博客</title>
+<meta name="google-site-verification" content="Z1PF5NCqkdtwbxzUTwlOmG4skCjHJETmCtJKx7U4s4E">
+	<link rel="stylesheet" href="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/style.css" type="text/css" media="screen">
+  <link rel="shortcut icon" type="image/ico" href="http://blog.51yip.com/favicon.ico">
+	<link rel="pingback" href="http://blog.51yip.com/xmlrpc.php">
+	<!--<link rel="author" href="https://plus.google.com/113380862708536382046" />-->
+		<link rel="archives" title="2016年一月" href="http://blog.51yip.com/date/2016/01">
+	<link rel="archives" title="2015年十二月" href="http://blog.51yip.com/date/2015/12">
+	<link rel="archives" title="2015年十一月" href="http://blog.51yip.com/date/2015/11">
+	<link rel="archives" title="2015年十月" href="http://blog.51yip.com/date/2015/10">
+	<link rel="archives" title="2015年九月" href="http://blog.51yip.com/date/2015/09">
+	<link rel="archives" title="2015年八月" href="http://blog.51yip.com/date/2015/08">
+	<link rel="archives" title="2015年七月" href="http://blog.51yip.com/date/2015/07">
+	<link rel="archives" title="2015年六月" href="http://blog.51yip.com/date/2015/06">
+	<link rel="archives" title="2015年五月" href="http://blog.51yip.com/date/2015/05">
+	<link rel="archives" title="2015年四月" href="http://blog.51yip.com/date/2015/04">
+	<link rel="archives" title="2015年三月" href="http://blog.51yip.com/date/2015/03">
+	<link rel="archives" title="2015年二月" href="http://blog.51yip.com/date/2015/02">
+	<link rel="archives" title="2015年一月" href="http://blog.51yip.com/date/2015/01">
+	<link rel="archives" title="2014年十二月" href="http://blog.51yip.com/date/2014/12">
+	<link rel="archives" title="2014年十一月" href="http://blog.51yip.com/date/2014/11">
+	<link rel="archives" title="2014年十月" href="http://blog.51yip.com/date/2014/10">
+	<link rel="archives" title="2014年九月" href="http://blog.51yip.com/date/2014/09">
+	<link rel="archives" title="2014年八月" href="http://blog.51yip.com/date/2014/08">
+	<link rel="archives" title="2014年七月" href="http://blog.51yip.com/date/2014/07">
+	<link rel="archives" title="2014年六月" href="http://blog.51yip.com/date/2014/06">
+	<link rel="archives" title="2014年五月" href="http://blog.51yip.com/date/2014/05">
+	<link rel="archives" title="2014年四月" href="http://blog.51yip.com/date/2014/04">
+	<link rel="archives" title="2014年三月" href="http://blog.51yip.com/date/2014/03">
+	<link rel="archives" title="2014年二月" href="http://blog.51yip.com/date/2014/02">
+	<link rel="archives" title="2013年十二月" href="http://blog.51yip.com/date/2013/12">
+	<link rel="archives" title="2013年十一月" href="http://blog.51yip.com/date/2013/11">
+	<link rel="archives" title="2013年十月" href="http://blog.51yip.com/date/2013/10">
+	<link rel="archives" title="2013年九月" href="http://blog.51yip.com/date/2013/09">
+	<link rel="archives" title="2013年八月" href="http://blog.51yip.com/date/2013/08">
+	<link rel="archives" title="2013年七月" href="http://blog.51yip.com/date/2013/07">
+	<link rel="archives" title="2013年六月" href="http://blog.51yip.com/date/2013/06">
+	<link rel="archives" title="2013年五月" href="http://blog.51yip.com/date/2013/05">
+	<link rel="archives" title="2013年四月" href="http://blog.51yip.com/date/2013/04">
+	<link rel="archives" title="2013年三月" href="http://blog.51yip.com/date/2013/03">
+	<link rel="archives" title="2013年二月" href="http://blog.51yip.com/date/2013/02">
+	<link rel="archives" title="2013年一月" href="http://blog.51yip.com/date/2013/01">
+	<link rel="archives" title="2012年十二月" href="http://blog.51yip.com/date/2012/12">
+	<link rel="archives" title="2012年十一月" href="http://blog.51yip.com/date/2012/11">
+	<link rel="archives" title="2012年十月" href="http://blog.51yip.com/date/2012/10">
+	<link rel="archives" title="2012年九月" href="http://blog.51yip.com/date/2012/09">
+	<link rel="archives" title="2012年八月" href="http://blog.51yip.com/date/2012/08">
+	<link rel="archives" title="2012年七月" href="http://blog.51yip.com/date/2012/07">
+	<link rel="archives" title="2012年六月" href="http://blog.51yip.com/date/2012/06">
+	<link rel="archives" title="2012年五月" href="http://blog.51yip.com/date/2012/05">
+	<link rel="archives" title="2012年四月" href="http://blog.51yip.com/date/2012/04">
+	<link rel="archives" title="2012年三月" href="http://blog.51yip.com/date/2012/03">
+	<link rel="archives" title="2012年二月" href="http://blog.51yip.com/date/2012/02">
+	<link rel="archives" title="2012年一月" href="http://blog.51yip.com/date/2012/01">
+	<link rel="archives" title="2011年十二月" href="http://blog.51yip.com/date/2011/12">
+	<link rel="archives" title="2011年十一月" href="http://blog.51yip.com/date/2011/11">
+	<link rel="archives" title="2011年十月" href="http://blog.51yip.com/date/2011/10">
+	<link rel="archives" title="2011年九月" href="http://blog.51yip.com/date/2011/09">
+	<link rel="archives" title="2011年八月" href="http://blog.51yip.com/date/2011/08">
+	<link rel="archives" title="2011年七月" href="http://blog.51yip.com/date/2011/07">
+	<link rel="archives" title="2011年六月" href="http://blog.51yip.com/date/2011/06">
+	<link rel="archives" title="2011年五月" href="http://blog.51yip.com/date/2011/05">
+	<link rel="archives" title="2011年四月" href="http://blog.51yip.com/date/2011/04">
+	<link rel="archives" title="2011年三月" href="http://blog.51yip.com/date/2011/03">
+	<link rel="archives" title="2011年二月" href="http://blog.51yip.com/date/2011/02">
+	<link rel="archives" title="2011年一月" href="http://blog.51yip.com/date/2011/01">
+	<link rel="archives" title="2010年十二月" href="http://blog.51yip.com/date/2010/12">
+	<link rel="archives" title="2010年十一月" href="http://blog.51yip.com/date/2010/11">
+	<link rel="archives" title="2010年十月" href="http://blog.51yip.com/date/2010/10">
+	<link rel="archives" title="2010年九月" href="http://blog.51yip.com/date/2010/09">
+	<link rel="archives" title="2010年八月" href="http://blog.51yip.com/date/2010/08">
+	<link rel="archives" title="2010年七月" href="http://blog.51yip.com/date/2010/07">
+	<link rel="archives" title="2010年六月" href="http://blog.51yip.com/date/2010/06">
+	<link rel="archives" title="2010年五月" href="http://blog.51yip.com/date/2010/05">
+	<link rel="archives" title="2010年四月" href="http://blog.51yip.com/date/2010/04">
+	<link rel="archives" title="2010年三月" href="http://blog.51yip.com/date/2010/03">
+	<link rel="archives" title="2010年二月" href="http://blog.51yip.com/date/2010/02">
+  	  
+  
+	
+	<link rel="alternate" type="application/rss+xml" title="海底苍鹰(tank)博客 » php __FILE__,__CLASS__等魔术变量,及实例 评论 Feed" href="http://blog.51yip.com/php/1165.html/feed">
+<link rel="stylesheet" id="wp-pagenavi-css" href="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/pagenavi-css.css" type="text/css" media="">
+<script type="text/javascript" src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/jquery.js"></script>
+<script type="text/javascript" src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/comment-reply.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.51yip.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.51yip.com/wp-includes/wlwmanifest.xml"> 
+<link rel="index" title="海底苍鹰(tank)博客" href="http://blog.51yip.com/">
+<link rel="start" title="linux  eclipse 安装  php 插件安装" href="http://blog.51yip.com/eclipse/15.html">
+<link rel="prev" title="1个例子搞定div css li 多列显示" href="http://blog.51yip.com/htmlcss/1163.html">
+<link rel="next" title="linux下安装虚拟机qemu kqemu" href="http://blog.51yip.com/server/1166.html">
+<meta name="generator" content="WordPress 2.9.1">
+<link rel="canonical" href="http://blog.51yip.com/php/1165.html">
+	<link href="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/SyntaxHighlighter.css" type="text/css" rel="stylesheet">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<script src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/logger.js"></script><link type="text/css" rel="stylesheet" href="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/bdsstyle.css"></head>
+
+<body><iframe style="display: none;" frameborder="0"></iframe><div style="display: block;" id="bdshare_s"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div style="display: none;" id="bdshare_l"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="#" class="bds_mshare mshare">一键分享</a></li><li><a href="#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="#" class="bds_renren rrw">人人网</a></li><li><a href="#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="#" class="bds_douban db">豆瓣网</a></li><li><a href="#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="#" class="bds_sqq sqq">QQ好友</a></li><li><a href="#" class="bds_thx thx">和讯微博</a></li><li><a href="#" class="bds_more">更多...</a></li></ul><p><a href="#" class="goWebsite">百度分享</a></p></div></div></div>
+
+<div id="wrapper">
+
+	<div id="header">
+
+		<div class="headerwrap">
+
+			<div id="logo">
+								<h2><a href="http://blog.51yip.com/" title="－－一步，二步，三步，N步，二行脚印">海底苍鹰(tank)博客</a></h2>
+							</div>
+
+			<div id="search">
+				<form method="get" id="searchform" action="http://blog.51yip.com/">
+	<div>
+		<input name="s" id="s" type="text">
+		<input id="searchsubmit" value="Search" type="submit">
+	</div>
+</form>			</div>
+
+
+      
+			<div id="description">
+				<h3>－－一步，二步，三步，N步，二行脚印</h3>
+			</div>
+
+      <div id="blackband_top_right">
+        <h2>
+        <ul id="dropmenu">
+          <li class="page_item"><a href="http://blog.51yip.com/donate" title="赞助本站">赞助本站</a></li>
+          <li class="page_item"><a href="http://blog.51yip.com/aboutme" title="海底苍鹰(tank)博客">关于我</a></li>
+          <!--<li class="page_item"><a href="http://blog.51yip.com/tag-page" title="标签页">标签页</a></li>-->
+          <li class="page_item"><a href="http://blog.51yip.com/message" title="留言板">留言板</a></li>      
+          <li class="page_item"><a href="http://manual.51yip.com/" title="开发手册">开发手册</a></li>
+          <li class="page_item"><a href="http://linux.51yip.com/" target="_black" title="linux命令手册">linux命令</a></li>
+          <li class="page_item"><a href="http://blog.51yip.com/" title="海底苍鹰(tank)博客">首页</a></li>
+        </ul>
+        </h2>
+      </div>
+      
+      
+		</div>
+
+	</div>
+
+	<div id="page">
+
+		<div class="columns">
+
+<div id="content">
+
+	
+<div class="top"></div>
+	<div class="posts">
+
+<div class="navigation">
+	<div class="alignleft">&lt;&lt; <a href="http://blog.51yip.com/server/1166.html" rel="next">linux下安装虚拟机qemu kqemu</a></div>
+	<div class="alignright"><a href="http://blog.51yip.com/htmlcss/1163.html" rel="prev">1个例子搞定div css li 多列显示</a> &gt;&gt;</div>
+	
+</div>
+<div style="clear:both;"></div>
+<div class="navigation_line"></div>
+		<div class="post-1165 post hentry category-php tag-php tag-class tag-dir tag-file tag-function tag-method tag-static" id="post-1165">
+
+
+
+
+			<div class="title">
+				 <h1 class="title entry-title">php __FILE__,__CLASS__等魔术变量,及实例</h1>
+			</div>
+
+			<div class="meta">
+				<p><span class="vcard author"><span class="fn">张映</span></span> 发表于 <span class="date updated">2010-12-13</span></p>
+				<p>分类目录： <a href="http://blog.51yip.com/category/php" title="查看 php 的全部文章" rel="category tag">php</a></p>
+				<p>标签：<a href="http://blog.51yip.com/tag/php" rel="tag">php</a>, <a href="http://blog.51yip.com/tag/__class__" rel="tag">__CLASS__</a>, <a href="http://blog.51yip.com/tag/__dir__" rel="tag">__DIR__</a>, <a href="http://blog.51yip.com/tag/__file__" rel="tag">__FILE__</a>, <a href="http://blog.51yip.com/tag/__function__" rel="tag">__FUNCTION__</a>, <a href="http://blog.51yip.com/tag/__method__" rel="tag">__METHOD__</a>, <a href="http://blog.51yip.com/tag/__static__" rel="tag">__STATIC__</a></p>			</div>
+			
+			<div class="entry">
+				<p>今天看到一个魔术变量，是以前没见过的，__DIR__，我查了查，发现原来是php5.3新增的，顺便举几个例子，解释一下php的魔术变量<br>
+<span id="more-1165"></span></p>
+<p><strong>1，__FILE__</strong></p>
+<p>文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名。自          PHP 4.0.2 起，<strong>__FILE__</strong> 总是包含一个绝对路径（如果是符号连接，则是解析后的绝对路径），而在此之前的版本有时会包含一个相对路径。<br>
+这个变量，我用的是最多的，估计也是大家用的最多的。</p>
+<p>web服务器都会指定一个documentroot的，但是不同的服务器，设置的documentroot有可能是不同的，在这种情况下，把一个网站从一个服务器搬家到另一个服务器，这样就有可能因为路径的不同，造成网站跑不起来。</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">/**</span>&nbsp;</span></li><li class="alt"><span><span class="comment">在你的公用的配置文件中，来设置你的根目录，这样就不用担心经常搬家了。</span>&nbsp;</span></li><li class=""><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>define(<span class="string">'ROOT_PATH'</span><span>,&nbsp;dirname(</span><span class="keyword">__FILE__</span><span>)&nbsp;.&nbsp;DIRECTORY_SEPARATOR);&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;ROOT_PATH;&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;</span><span class="keyword">__FILE__</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;dirname(</span><span class="keyword">__FILE__</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;dirname(dirname(</span><span class="keyword">__FILE__</span><span>));&nbsp;&nbsp;</span></span></li><li class="alt"><span>?&gt;&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+/**
+在你的公用的配置文件中，来设置你的根目录，这样就不用担心经常搬家了。
+*/
+define('ROOT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+echo ROOT_PATH;
+echo "&lt;br&gt;";
+echo __FILE__;
+echo "&lt;br&gt;";
+echo dirname(__FILE__);
+echo "&lt;br&gt;";
+echo dirname(dirname(__FILE__));
+?&gt;
+</pre>
+<p><strong>2，__LINE__</strong></p>
+<p>文件中的当前行号。这个变量在调试错误的时候，还是比较有作用的，其他的时候，没什么用处，纯属个人观点。</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;</span><span class="keyword">__LINE__</span><span>;&nbsp;&nbsp;</span><span class="comment">//显示，__LINE__所在的行号</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>?&gt;&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+echo __LINE__;  //显示，__LINE__所在的行号
+?&gt;
+</pre>
+<p><strong>3，__CLASS__</strong></p>
+<p>类的名称，PHP5返回的结果是区分大小写的</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;base_class&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="keyword">function</span><span>&nbsp;say_a()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"'a'&nbsp;-&nbsp;said&nbsp;the&nbsp;"</span><span>&nbsp;.&nbsp;</span><span class="keyword">__CLASS__</span><span>&nbsp;.&nbsp;</span><span class="string">"&lt;br/&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="keyword">function</span><span>&nbsp;say_b()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"'b'&nbsp;-&nbsp;said&nbsp;the&nbsp;"</span><span>&nbsp;.&nbsp;get_class(</span><span class="vars">$this</span><span>)&nbsp;.&nbsp;</span><span class="string">"&lt;br/&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;derived_class&nbsp;</span><span class="keyword">extends</span><span>&nbsp;base_class&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="keyword">function</span><span>&nbsp;say_a()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;parent::say_a();&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"'a'&nbsp;-&nbsp;said&nbsp;the&nbsp;"</span><span>&nbsp;.&nbsp;</span><span class="keyword">__CLASS__</span><span>&nbsp;.&nbsp;</span><span class="string">"&lt;br/&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;<span class="keyword">function</span><span>&nbsp;say_b()&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;parent::say_b();&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"'b'&nbsp;-&nbsp;said&nbsp;the&nbsp;"</span><span>&nbsp;.&nbsp;get_class(</span><span class="vars">$this</span><span>)&nbsp;.&nbsp;</span><span class="string">"&lt;br/&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="vars">$obj_b</span><span>&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;derived_class();&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="vars">$obj_b</span><span>-&gt;say_a();&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br/&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="vars">$obj_b</span><span>-&gt;say_b();&nbsp;&nbsp;</span></span></li><li class=""><span>?&gt;&nbsp;&nbsp;</span></li><li class="alt"><span>结果为：&nbsp;&nbsp;</span></li><li class=""><span><span class="string">'a'</span><span>&nbsp;-&nbsp;said&nbsp;the&nbsp;base_class&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="string">'a'</span><span>&nbsp;-&nbsp;said&nbsp;the&nbsp;derived_class&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="string">'b'</span><span>&nbsp;-&nbsp;said&nbsp;the&nbsp;&nbsp;derived_class&nbsp;&nbsp;</span></span></li><li class=""><span><span class="string">'b'</span><span>&nbsp;-&nbsp;said&nbsp;the&nbsp;derived_class&nbsp;&nbsp;</span></span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+class base_class
+{
+ function say_a()
+ {
+ echo "'a' - said the " . __CLASS__ . "&lt;br/&gt;";
+ }
+ function say_b()
+ {
+ echo "'b' - said the " . get_class($this) . "&lt;br/&gt;";
+ }
+}
+
+class derived_class extends base_class
+{
+ function say_a()
+ {
+ parent::say_a();
+ echo "'a' - said the " . __CLASS__ . "&lt;br/&gt;";
+ }
+ function say_b()
+ {
+ parent::say_b();
+ echo "'b' - said the " . get_class($this) . "&lt;br/&gt;";
+ }
+}
+
+$obj_b = new derived_class();
+$obj_b-&gt;say_a();
+echo "&lt;br/&gt;";
+$obj_b-&gt;say_b();
+?&gt;
+结果为：
+'a' - said the base_class
+'a' - said the derived_class
+
+'b' - said the  derived_class
+'b' - said the derived_class
+</pre>
+<p>有的时候，我们可以用get_class来代替__CLASS__</p>
+<p><strong>4,__FUNCTION__和__METHOD__</strong></p>
+<p>__FUNCTION__：函数名称，php5中返回的结果是区分大小写的<br>
+__METHOD__：方法中的函数名称，php5中返回的结果是区分大小写的</p>
+<p>二个都是取得方法的名称，有什么不同呢？</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;test&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="keyword">function</span><span>&nbsp;a()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="keyword">__FUNCTION__</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="keyword">__METHOD__</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="keyword">function</span><span>&nbsp;good&nbsp;(){&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="keyword">__FUNCTION__</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;<span class="func">echo</span><span>&nbsp;</span><span class="keyword">__METHOD__</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="vars">$test</span><span>&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;test();&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="vars">$test</span><span>-&gt;a();&nbsp;&nbsp;</span></span></li><li class=""><span><span class="func">echo</span><span>&nbsp;</span><span class="string">"&lt;br&gt;"</span><span>;&nbsp;&nbsp;</span></span></li><li class="alt"><span>good();&nbsp;&nbsp;</span></li><li class=""><span>?&gt;&nbsp;&nbsp;</span></li><li class="alt"><span>返回结果：&nbsp;&nbsp;</span></li><li class=""><span>a&nbsp;&nbsp;</span></li><li class="alt"><span>test::a&nbsp;&nbsp;</span></li><li class=""><span>good&nbsp;&nbsp;</span></li><li class="alt"><span>good&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+class test
+{
+ function a()
+ {
+ echo __FUNCTION__;
+ echo "&lt;br&gt;";
+ echo __METHOD__;
+ }
+}
+
+function good (){
+ echo __FUNCTION__;
+ echo "&lt;br&gt;";
+ echo __METHOD__;
+}
+
+$test = new test();
+$test-&gt;a();
+echo "&lt;br&gt;";
+good();
+?&gt;
+返回结果：
+a
+test::a
+good
+good
+</pre>
+<p>相对于孤立的函数来说，二个都可以取出函数名，没什么区别，如果是class中的方法时，__FUNCTION__只能取出class的方法名，而__METHOD__不光能取出方法名，还能取出class名</p>
+<p><strong>5，__DIR__</strong></p>
+<p>文件所在的目录。如果用在被包括文件中，则返回被包括的文件所在的目录。它等价于 dirname(__FILE__)。除非是根目录，否则目录中名不包括末尾的斜杠。（PHP 5.3.0中新增）</p>
+<p>如果在5.3以前的版本中想用__DIR__的话，可以这样</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">if</span><span>(!defined(</span><span class="string">'__DIR__'</span><span>))&nbsp;{&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;<span class="vars">$iPos</span><span>&nbsp;=&nbsp;</span><span class="func">strrpos</span><span>(</span><span class="keyword">__FILE__</span><span>,&nbsp;</span><span class="string">"/"</span><span>);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;define(<span class="string">"__DIR__"</span><span>,&nbsp;</span><span class="func">substr</span><span>(</span><span class="keyword">__FILE__</span><span>,&nbsp;0,&nbsp;</span><span class="vars">$iPos</span><span>)&nbsp;.&nbsp;</span><span class="string">"/"</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>?&gt;&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+if(!defined('__DIR__')) {
+ $iPos = strrpos(__FILE__, "/");
+ define("__DIR__", substr(__FILE__, 0, $iPos) . "/");
+}
+?&gt;</pre>
+<p><strong>6，__NAMESPACE__</strong></p>
+<p>当前命名空间的名称（大小写敏感）。这个常量是在编译时定义的（PHP 5.3.0 新增）</p>
+<p><strong>7，__STATIC__</strong></p>
+<p>当你调用class的静态方法时，返回class名称，区分大小写。如果在继承中调用的话，不管在继承中有没有定义，都能返回继承的class名。</p>
+<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">查看</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">复制</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">打印</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-c" start="1"><li class="alt"><span><span>&lt;?php&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//php5.3</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">class</span><span>&nbsp;Model&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">static</span><span>&nbsp;</span><span class="keyword">function</span><span>&nbsp;find()&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;<span class="func">echo</span><span>&nbsp;__STATIC__;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="keyword">class</span><span>&nbsp;Product&nbsp;</span><span class="keyword">extends</span><span>&nbsp;Model&nbsp;{}&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;User&nbsp;</span><span class="keyword">extends</span><span>&nbsp;Model&nbsp;{}&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>Product::find();&nbsp;<span class="comment">//&nbsp;"Product"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>User::find();&nbsp;<span class="comment">//&nbsp;"User"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>?&gt;&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" class="php" name="code">&lt;?php
+//php5.3
+class Model
+{
+ public static function find()
+ {
+ echo __STATIC__;
+ }
+}
+
+class Product extends Model {}
+class User extends Model {}
+
+Product::find(); // "Product"
+User::find(); // "User"
+?&gt;
+</pre>
+
+			<!-- Baidu Button BEGIN -->
+			<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare" style="float:right;margin-right:15px;">
+			<a href="#" title="分享到QQ空间" class="bds_qzone"></a>
+			<a href="#" title="分享到新浪微博" class="bds_tsina"></a>
+			<a href="#" title="分享到腾讯微博" class="bds_tqq"></a>
+			<a href="#" title="分享到人人网" class="bds_renren"></a>
+			<a href="#" title="分享到网易微博" class="bds_t163"></a>
+			<span class="bds_more"></span>
+			<a title="累计分享6次" href="#" class="shareCount">6</a>
+			</div>
+			<script src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/bds_s_v2.js" type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=4016707"></script>
+			
+			<script type="text/javascript">
+			document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+			</script>
+			<!-- Baidu Button END -->
+
+    <br><br><b>转载请注明<br>作者:海底苍鹰<br>地址:<a href="http://blog.51yip.com/php/1165.html">http://blog.51yip.com/php/1165.html</a></b>							</div>
+
+		</div>
+
+	</div>
+
+<div class="navigation">
+	<div class="alignleft">&lt;&lt; <a href="http://blog.51yip.com/server/1166.html" rel="next">linux下安装虚拟机qemu kqemu</a></div>
+	<div class="alignright"><a href="http://blog.51yip.com/htmlcss/1163.html" rel="prev">1个例子搞定div css li 多列显示</a> &gt;&gt;</div>
+</div>
+
+<div style="clear:both;"></div>
+<div class="navigation_line"></div>
+
+	<div class="lastlist">
+		<p>相关文章</p>
+		<ul>
+		<div class="related_post"><ul><li><a href="http://blog.51yip.com/linux/1754.html" title="squid 代理服务器 用户认证">squid 代理服务器 用户认证 </a></li><li><a href="http://blog.51yip.com/apachenginx/1751.html" title="nginx php 上传文件大小 设置">nginx php 上传文件大小 设置 </a></li><li><a href="http://blog.51yip.com/apachenginx/1736.html" title="nginx php curl 访问 不正常">nginx php curl 访问 不正常 </a></li><li><a href="http://blog.51yip.com/php/1729.html" title="php namespace use 用法">php namespace use 用法 </a></li><li><a href="http://blog.51yip.com/nosql/1727.html" title="redis cluster php 客户端 predis">redis cluster php 客户端 predis </a></li><li><a href="http://blog.51yip.com/php/1712.html" title="php 跨域 form提交 2种方法">php 跨域 form提交 2种方法 </a></li><li><a href="http://blog.51yip.com/php/1708.html" title="php word 转 html">php word 转 html </a></li><li><a href="http://blog.51yip.com/php/1707.html" title="php 去掉 头尾 &nbsp; 空格 2种方法">php 去掉 头尾 &nbsp; 空格 2种方法 </a></li><li><a href="http://blog.51yip.com/php/1700.html" title="windows server php exec 无法执行">windows server php exec 无法执行 </a></li><li><a href="http://blog.51yip.com/php/1698.html" title="php 实现同一个账号同时只能一个人登录">php 实现同一个账号同时只能一个人登录 </a></li></ul></div>		
+		</ul>
+	</div>
+
+	<div class="comments">
+		
+<!-- You can start editing here. -->
+
+
+<h3 id="comments">5 条评论</h3>
+
+<ol class="commentlist">
+	
+	<li class="comment even thread-even depth-1" id="comment-402">
+		<div id="div-comment-402" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="#comment-402"></a><cite class="fn">wangning</cite> <span class="says">留言</span> <span class="commentmetadata">(2011年2月23日 08:25 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>不错</p>
+					
+			</div>
+		</div>
+</li>
+
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-636">
+		<div id="div-comment-636" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="#comment-636"></a><cite class="fn">Dark_Angel</cite> <span class="says">留言</span> <span class="commentmetadata">(2011年8月11日 05:36 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>看到这文章后很激动，因为我想使用__STATIC__，但是却发现，现在我的5.3.3不支持了，去官方查，也查不到这个魔术常量了，难道被取消了？看到官方下面也有人问这个，有人回复说使用get_called_class()函数</p>
+					
+			</div>
+		</div>
+</li>
+
+	<li class="comment even thread-even depth-1" id="comment-637">
+		<div id="div-comment-637" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="#comment-637"></a><cite class="fn">Dark_Angel</cite> <span class="says">留言</span> <span class="commentmetadata">(2011年8月11日 05:37 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>再补充一下，我在官方找到的页面http://www.php.net/manual/zh/language.constants.predefined.php</p>
+					
+			</div>
+		</div>
+</li>
+
+	<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-648">
+		<div id="div-comment-648" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="#comment-648"></a><cite class="fn">张映</cite> <span class="says">留言</span> <span class="commentmetadata">(2011年8月13日 02:47 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>谢谢</p>
+					
+			</div>
+		</div>
+</li>
+
+	<li class="comment even thread-even depth-1" id="comment-16227">
+		<div id="div-comment-16227" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="#comment-16227"></a><cite class="fn">Nanqe</cite> <span class="says">留言</span> <span class="commentmetadata">(2014年11月20日 08:01 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>解释的很透彻</p>
+					
+			</div>
+		</div>
+</li>
+</ol>
+
+
+
+
+<div class="commentrespond">
+
+	<div id="respond">
+
+		<h3>留下评论</h3>
+
+		<div class="cancel-comment-reply">
+			<small><a rel="nofollow" id="cancel-comment-reply-link" href="http://blog.51yip.com/php/1165.html#respond" style="display:none;">点击这里取消回复</a></small>
+		</div>
+
+		
+		<form action="http://blog.51yip.com/pl.php" method="post" id="commentform">
+		<fieldset>
+			<legend>留下评论</legend>
+
+			
+			<ul>
+							<li>
+					<label for="author"><span>名称：</span></label>
+					<input name="author" id="author" size="22" tabindex="1" type="text">
+					<span class="req">(必需)</span>
+				</li>
+				<li>
+					<label for="email"><span>电子邮件：</span></label>
+					<input name="email" id="email" size="22" tabindex="2" type="text">
+					<span class="req">(必需) (will not be published)</span>
+				</li>
+				<li>
+					<label for="email"><span>验证码：</span></label>
+					<input name="code" id="code" size="22" tabindex="3" type="text">
+					<input name="ji" id="ji" value="24" size="22" tabindex="3" type="hidden">
+					<span class="req">(必需) &nbsp;&nbsp;6X4=?</span>					
+				</li>
+				<li>
+					<label for="url"><span>URL：</span></label>
+					<input name="url" id="url" size="22" tabindex="4" type="text">
+				</li>
+							<li class="textarea">
+					<label for="comment"><span>您的评论</span></label>
+					<textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea>
+				</li>
+			</ul>
+			<p>
+				<input name="submit" id="submit" tabindex="5" value="提交  评论" type="submit">
+			</p>
+			<input name="comment_post_ID" value="1165" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+					</fieldset>
+		</form>
+
+
+		</div>
+
+</div>
+
+	</div>
+
+	
+
+	
+</div>
+
+<div id="aside">
+
+	<ul>
+
+
+		<li id="categories-3" class="widget widget_categories"><h3 class="widgettitle">分类目录<span><!-- --></span></h3>		<ul>
+	<li class="cat-item cat-item-9"><a href="http://blog.51yip.com/category/apachenginx" title="根apache和nginx有关的文章">apache/nginx</a> (29)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://blog.51yip.com/category/cache" title="根cache有关的文章 ">cache</a> (21)
+</li>
+	<li class="cat-item cat-item-461"><a href="http://blog.51yip.com/category/drupal" title="drupal">drupal</a> (7)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://blog.51yip.com/category/eclipse" title="根eclipse有关的文章">eclipse</a> (8)
+</li>
+	<li class="cat-item cat-item-98"><a href="http://blog.51yip.com/category/google" title="google,google地图,google新闻">google</a> (3)
+</li>
+	<li class="cat-item cat-item-88"><a href="http://blog.51yip.com/category/htmlcss" title="根html和css有关的文章">html/css</a> (11)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://blog.51yip.com/category/jsjquery" title="根js,javascript和jquery有关的文章">js/jquery</a> (54)
+</li>
+	<li class="cat-item cat-item-8"><a href="http://blog.51yip.com/category/linux" title="根linux和windows有关的文章">linux</a> (85)
+</li>
+	<li class="cat-item cat-item-891"><a href="http://blog.51yip.com/category/mariadb" title="查看 mariadb 下的所有文章">mariadb</a> (2)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://blog.51yip.com/category/mysql" title="根mysql有关的文章">mysql</a> (63)
+</li>
+	<li class="cat-item cat-item-756"><a href="http://blog.51yip.com/category/nosql" title="查看 nosql 下的所有文章">nosql</a> (37)
+</li>
+	<li class="cat-item cat-item-520"><a href="http://blog.51yip.com/category/oracle" title="oracle数据库">oracle</a> (9)
+</li>
+	<li class="cat-item cat-item-702"><a href="http://blog.51yip.com/category/pgsql" title="PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES 版本 4.2 为基础的对象关系型数据库管理系统（ORDBMS）,简称pgsql,它支持大部分 SQL">pgsql</a> (7)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://blog.51yip.com/category/php" title="根php有关的文章">php</a> (89)
+</li>
+	<li class="cat-item cat-item-38"><a href="http://blog.51yip.com/category/seo" title="根seo优化有关的文章">seo</a> (16)
+</li>
+	<li class="cat-item cat-item-44"><a href="http://blog.51yip.com/category/shell" title="查看 shell 下的所有文章">shell</a> (11)
+</li>
+	<li class="cat-item cat-item-189"><a href="http://blog.51yip.com/category/smarty" title="smarty学习,smarty使用,smarty技巧">smarty</a> (5)
+</li>
+	<li class="cat-item cat-item-36"><a href="http://blog.51yip.com/category/wordpress" title="根wordpress有关的文章">wordpress</a> (13)
+</li>
+	<li class="cat-item cat-item-135"><a href="http://blog.51yip.com/category/social" title="看到的社会现象">双眼看社会</a> (13)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://blog.51yip.com/category/other" title="杂谈文章">技术其他</a> (21)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://blog.51yip.com/category/server" title="根服务器架构有关的文章，集群，分部式">服务器相关</a> (78)
+</li>
+	<li class="cat-item cat-item-705"><a href="http://blog.51yip.com/category/safe" title="系统安全">系统安全</a> (6)
+</li>
+		</ul>
+</li>		<li id="recent-posts-3" class="widget widget_recent_entries">		<h3 class="widgettitle">最近文章<span><!-- --></span></h3>		<ul>
+				<li><a href="http://blog.51yip.com/linux/1780.html" title="linux lvm 同一块硬盘多个逻辑卷">linux lvm 同一块硬盘多个逻辑卷 </a></li>
+				<li><a href="http://blog.51yip.com/linux/1779.html" title="linux lvm 安全 删除 硬盘或分区">linux lvm 安全 删除 硬盘或分区 </a></li>
+				<li><a href="http://blog.51yip.com/linux/1778.html" title="linux 挂载硬盘扩容的2种方法">linux 挂载硬盘扩容的2种方法 </a></li>
+				<li><a href="http://blog.51yip.com/nosql/1776.html" title="redis overcommit memory (oom) 问题解决">redis overcommit memory (oom) 问题解决 </a></li>
+				<li><a href="http://blog.51yip.com/jsjquery/1775.html" title="jquery ui dialog 替代 confirm">jquery ui dialog 替代 confirm </a></li>
+				<li><a href="http://blog.51yip.com/linux/1774.html" title="shell awk 检查程序是否执行">shell awk 检查程序是否执行 </a></li>
+				<li><a href="http://blog.51yip.com/other/1773.html" title="114 域名劫持">114 域名劫持 </a></li>
+				<li><a href="http://blog.51yip.com/server/1769.html" title="git 获取 历史版本 详解">git 获取 历史版本 详解 </a></li>
+				<li><a href="http://blog.51yip.com/jsjquery/1765.html" title="js,css打包,压缩工具grunt">js,css打包,压缩工具grunt </a></li>
+				<li><a href="http://blog.51yip.com/jsjquery/1764.html" title="ajax 跨域 4种方法">ajax 跨域 4种方法 </a></li>
+				</ul>
+		</li>		<li id="recent-comments-3" class="widget widget_recent_comments">			<h3 class="widgettitle">最近评论和留言<span><!-- --></span></h3>			<ul id="recentcomments"><li class="recentcomments">苟亮 在 <a href="http://blog.51yip.com/message/comment-page-2#comment-17366">留言板</a> 留言了</li><li class="recentcomments">xsf 在 <a href="http://blog.51yip.com/aboutme/comment-page-1#comment-17365">关于我</a> 上的评论</li><li class="recentcomments">better me 在 <a href="http://blog.51yip.com/jsjquery/1599.html/comment-page-1#comment-17363">angularjs 实现 window.onload() $(document).ready() 的4种方法</a> 上的评论</li><li class="recentcomments">bjpwg 在 <a href="http://blog.51yip.com/php/1698.html/comment-page-1#comment-17359">php 实现同一个账号同时只能一个人登录</a> 上的评论</li><li class="recentcomments">龙亲南 在 <a href="http://blog.51yip.com/nosql/1776.html/comment-page-1#comment-17358">redis overcommit memory (oom) 问题解决</a> 上的评论</li><li class="recentcomments">andy 在 <a href="http://blog.51yip.com/linux/1699.html/comment-page-1#comment-17355">linux 逻辑卷管理 调整分区大小</a> 上的评论</li><li class="recentcomments">zhm 在 <a href="http://blog.51yip.com/nosql/1726.html/comment-page-1#comment-17354">redis cluster 添加 删除 重分配 节点</a> 上的评论</li><li class="recentcomments">windinging 在 <a href="http://blog.51yip.com/jsjquery/1592.html/comment-page-1#comment-17353">angularjs filter 详解</a> 上的评论</li><li class="recentcomments">xiaox89 在 <a href="http://blog.51yip.com/aboutme/comment-page-1#comment-17351">关于我</a> 上的评论</li><li class="recentcomments">xiaox89 在 <a href="http://blog.51yip.com/aboutme/comment-page-1#comment-17350">关于我</a> 上的评论</li></ul>
+		</li><li id="archives-3" class="widget widget_archive"><h3 class="widgettitle">文章归档<span><!-- --></span></h3>		<ul>
+			<li><a href="http://blog.51yip.com/date/2016/01" title="2016年一月">2016年一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2015/12" title="2015年十二月">2015年十二月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2015/11" title="2015年十一月">2015年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2015/10" title="2015年十月">2015年十月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2015/09" title="2015年九月">2015年九月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2015/08" title="2015年八月">2015年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2015/07" title="2015年七月">2015年七月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2015/06" title="2015年六月">2015年六月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2015/05" title="2015年五月">2015年五月</a>&nbsp;(10)</li>
+	<li><a href="http://blog.51yip.com/date/2015/04" title="2015年四月">2015年四月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2015/03" title="2015年三月">2015年三月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2015/02" title="2015年二月">2015年二月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2015/01" title="2015年一月">2015年一月</a>&nbsp;(10)</li>
+	<li><a href="http://blog.51yip.com/date/2014/12" title="2014年十二月">2014年十二月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2014/11" title="2014年十一月">2014年十一月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/10" title="2014年十月">2014年十月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2014/09" title="2014年九月">2014年九月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2014/08" title="2014年八月">2014年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2014/07" title="2014年七月">2014年七月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/06" title="2014年六月">2014年六月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2014/05" title="2014年五月">2014年五月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2014/04" title="2014年四月">2014年四月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2014/03" title="2014年三月">2014年三月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/02" title="2014年二月">2014年二月</a>&nbsp;(11)</li>
+	<li><a href="http://blog.51yip.com/date/2013/12" title="2013年十二月">2013年十二月</a>&nbsp;(8)</li>
+	<li><a href="http://blog.51yip.com/date/2013/11" title="2013年十一月">2013年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2013/10" title="2013年十月">2013年十月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2013/09" title="2013年九月">2013年九月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2013/08" title="2013年八月">2013年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/07" title="2013年七月">2013年七月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/06" title="2013年六月">2013年六月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2013/05" title="2013年五月">2013年五月</a>&nbsp;(7)</li>
+	<li><a href="http://blog.51yip.com/date/2013/04" title="2013年四月">2013年四月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2013/03" title="2013年三月">2013年三月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2013/02" title="2013年二月">2013年二月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/01" title="2013年一月">2013年一月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2012/12" title="2012年十二月">2012年十二月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2012/11" title="2012年十一月">2012年十一月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2012/10" title="2012年十月">2012年十月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2012/09" title="2012年九月">2012年九月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2012/08" title="2012年八月">2012年八月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2012/07" title="2012年七月">2012年七月</a>&nbsp;(14)</li>
+	<li><a href="http://blog.51yip.com/date/2012/06" title="2012年六月">2012年六月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2012/05" title="2012年五月">2012年五月</a>&nbsp;(7)</li>
+	<li><a href="http://blog.51yip.com/date/2012/04" title="2012年四月">2012年四月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2012/03" title="2012年三月">2012年三月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2012/02" title="2012年二月">2012年二月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2012/01" title="2012年一月">2012年一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2011/12" title="2011年十二月">2011年十二月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2011/11" title="2011年十一月">2011年十一月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2011/10" title="2011年十月">2011年十月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2011/09" title="2011年九月">2011年九月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2011/08" title="2011年八月">2011年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2011/07" title="2011年七月">2011年七月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2011/06" title="2011年六月">2011年六月</a>&nbsp;(13)</li>
+	<li><a href="http://blog.51yip.com/date/2011/05" title="2011年五月">2011年五月</a>&nbsp;(17)</li>
+	<li><a href="http://blog.51yip.com/date/2011/04" title="2011年四月">2011年四月</a>&nbsp;(13)</li>
+	<li><a href="http://blog.51yip.com/date/2011/03" title="2011年三月">2011年三月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2011/02" title="2011年二月">2011年二月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2011/01" title="2011年一月">2011年一月</a>&nbsp;(11)</li>
+	<li><a href="http://blog.51yip.com/date/2010/12" title="2010年十二月">2010年十二月</a>&nbsp;(18)</li>
+	<li><a href="http://blog.51yip.com/date/2010/11" title="2010年十一月">2010年十一月</a>&nbsp;(26)</li>
+	<li><a href="http://blog.51yip.com/date/2010/10" title="2010年十月">2010年十月</a>&nbsp;(21)</li>
+	<li><a href="http://blog.51yip.com/date/2010/09" title="2010年九月">2010年九月</a>&nbsp;(25)</li>
+	<li><a href="http://blog.51yip.com/date/2010/08" title="2010年八月">2010年八月</a>&nbsp;(24)</li>
+	<li><a href="http://blog.51yip.com/date/2010/07" title="2010年七月">2010年七月</a>&nbsp;(25)</li>
+	<li><a href="http://blog.51yip.com/date/2010/06" title="2010年六月">2010年六月</a>&nbsp;(21)</li>
+	<li><a href="http://blog.51yip.com/date/2010/05" title="2010年五月">2010年五月</a>&nbsp;(26)</li>
+	<li><a href="http://blog.51yip.com/date/2010/04" title="2010年四月">2010年四月</a>&nbsp;(28)</li>
+	<li><a href="http://blog.51yip.com/date/2010/03" title="2010年三月">2010年三月</a>&nbsp;(14)</li>
+	<li><a href="http://blog.51yip.com/date/2010/02" title="2010年二月">2010年二月</a>&nbsp;(21)</li>
+		</ul>
+</li><li id="linkcat-2" class="widget widget_links"><h3 class="widgettitle">友情链接<span><!-- --></span></h3>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.enjoydiy.com/" target="_blank">Enjoy Diy</a></li>
+<li><a href="http://blog.itblood.com/" target="_blank">IT热血青年</a></li>
+<li><a href="http://www.magentonotes.com/" target="_blank">Magento架构师</a></li>
+<li><a href="http://blog.itiwin.cn/" target="_blank">爱T-blog</a></li>
+<li><a href="http://www.iitshare.com/" target="_blank">爱积累爱分享</a></li>
+<li><a href="http://www.nowamagic.net/" rel="friend" target="_blank">简明现代魔法</a></li>
+
+	</ul>
+</li>
+<li id="meta-3" class="widget widget_meta"><h3 class="widgettitle">登录<span><!-- --></span></h3>			<ul>
+			<li><a href="http://blog.51yip.com/wp-login.php?action=register">注册</a></li>			<li><a href="http://blog.51yip.com/wp-login.php">登录</a></li>
+	
+						</ul>
+</li>
+	</ul>
+
+</div>
+
+
+		</div>
+
+	</div>
+
+	<div id="footer">
+
+		<div class="columns">
+			<div class="right">
+				<p>© 2010 海底苍鹰(tank)博客 ٠ Powered by 51yip.com ٠<a href="http://www.miitbeian.gov.cn/" target="_black"> 沪ICP备12010825号-1</a> 
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253709140'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1253709140%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1253709140"><a href="http://www.cnzz.com/stat/website.php?web_id=1253709140" target="_blank" title="站长统计"><img src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/pic.gif" hspace="0" border="0" vspace="0"></a></span><script src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/z_stat.php" type="text/javascript"></script><script src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/core.php" charset="utf-8" type="text/javascript"></script>
+				</p>
+			</div>
+			<div class="left">
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script class="javascript" src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/shCore.js"></script>
+<script class="javascript" src="php%20__FILE__,__CLASS__%E7%AD%89%E9%AD%94%E6%9C%AF%E5%8F%98%E9%87%8F,%E5%8F%8A%E5%AE%9E%E4%BE%8B%C2%AB%E6%B5%B7%E5%BA%95%E8%8B%8D%E9%B9%B0%28tank%29%E5%8D%9A%E5%AE%A2_files/high.js"></script>
+<script class="javascript">
+dp.SyntaxHighlighter.ClipboardSwf = 'http://blog.51yip.com/wp-content/plugins/google-syntax-highlighter/Scripts/clipboard.swf';
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+
+
+<script type="text/javascript">
+
+//  var _gaq = _gaq || [];
+//  _gaq.push(['_setAccount', 'UA-16813496-1']);
+//  _gaq.push(['_setDomainName', '.51yip.com']);
+//  _gaq.push(['_trackPageview']);
+
+//  (function() {
+//    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//  })();
+
+</script>
+
+
+
+
+
+
+</body></html>
+<!-- 84 queries. 0.304 seconds. -->

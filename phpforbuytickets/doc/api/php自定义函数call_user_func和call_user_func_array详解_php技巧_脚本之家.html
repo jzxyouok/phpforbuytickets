@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="content-type" content="text/html; charset=gbk"><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/changyan.js" charset="utf-8" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/ca-pub-6384567588307613.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/hm.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_006.js" async="" type="text/javascript"></script>
+<meta charset="gb2312">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform">
+<title>php自定义函数call_user_func和call_user_func_array详解_php技巧_脚本之家</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+<meta name="keywords" content="call_user_func,call_user_func_array">
+<meta name="description" content="看UCenter的时候有一个函数call_user_func，百思不得其解，因为我以为是自己定义的函数，结果到处都找不到，后来百度了一下才知道call_user_func是内置函数">
+<link rel="alternate" media="only screen and(max-width: 640px)" href="http://m.jb51.net/article/27696.htm">
+<meta http-equiv="mobile-agent" content="format=html5; url=http://m.jb51.net/article/27696.htm">
+<meta http-equiv="mobile-agent" content="format=xhtml; url=http://m.jb51.net/article/27696.htm">
+<script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/push.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_003.js" async="" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_005.js" async="" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_004.js" async="" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_002.js" async="" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom.js" async="" type="text/javascript"></script><script type="text/javascript">
+var tougao="mdxy-dxy";var lmname="PHP编程";
+(function(){var ua=navigator.userAgent.toLowerCase();var bIsIpad=ua.match(/ipad/i)=="ipad";var bIsIphoneOs=ua.match(/iphone os/i)=="iphone os";var bIsAndroid=ua.match(/android/i)=="android";var bIsWM=ua.match(/windows mobile/i)=="windows mobile";if(bIsIpad||bIsIphoneOs||bIsAndroid||bIsWM){window.location.href="http://m.jb51.net/article/27696.htm"}})();
+</script>
+<link type="text/css" href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/base.css" rel="stylesheet">
+<link type="text/css" href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/common.css" rel="stylesheet">
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/jquery.js"></script>
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/common.js"></script>
+<script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/share.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/version.js" charset="UTF-8" type="text/javascript"></script><link href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/share_style0_16.css" rel="stylesheet"><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/cookie.js" charset="UTF-8" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/cyrHH3dwi.js" charset="UTF-8" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/event.js" charset="UTF-8" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/sea.js" charset="UTF-8" type="text/javascript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/app-build.js" charset="UTF-8" type="text/javascript"></script><link href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/upload-img.css" type="text/css" rel="stylesheet"><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/main.js" charset="UTF-8" type="text/javascript"></script><style id="changyanCss">#SOHUCS{clear:both;min-height:320;_height:320px;overflow:visible;}#SOHUCS iframe{width:100%;min-height:320px;_height:320px;}</style><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/render-pc.js" charset="UTF-8" type="text/javascript"></script><link href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/changyan2.css" rel="stylesheet" charset="utf-8"><link href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/default.css" rel="stylesheet" charset="utf-8"></head>
+<body><div style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;" id="BAIDU_DUP_fp_wrapper"><iframe style="width: 0px; height: 0px; visibility: hidden; display: none;" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/o.html" id="BAIDU_DUP_fp_iframe"></iframe></div><div style="width: 131px; height: 301px; overflow: hidden; z-index: 2147483647; position: fixed; top: 150px; right: 75px;" id="BAIDU_EXP_UNION__wrapper_u480030_0_right"><div style="width:120px;height:270px;padding:4px;border:#acacac 1px solid;overflow:hidden;"><iframe id="BAIDU_EXP_UNION__wrapper_u480030_0_right_iframe" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="270" align="center,center" width="120"></iframe></div><div id="BAIDU_EXP_UNION__wrapper_u480030_0_right_closebtn" style="position:absolute;width:131px;height:20px;top:NaNpx;left:0;cursor:pointer;background-color:#999999;color:#fff;font-size:12px;font-family: 微软雅黑;text-align:center;line-height:20px;">关闭</div></div><div style="width: 131px; height: 301px; overflow: hidden; z-index: 2147483647; position: fixed; top: 150px; left: 75px;" id="BAIDU_EXP_UNION__wrapper_u480030_0_left"><div style="width:120px;height:270px;padding:4px;border:#acacac 1px solid;overflow:hidden;"><iframe id="BAIDU_EXP_UNION__wrapper_u480030_0_left_iframe" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_002.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="270" align="center,center" width="120"></iframe></div><div id="BAIDU_EXP_UNION__wrapper_u480030_0_left_closebtn" style="position: absolute; width: 131px; height: 20px; left: 0px; cursor: pointer; background-color: rgb(153, 153, 153); color: rgb(255, 255, 255); font-size: 12px; font-family: 微软雅黑; text-align: center; line-height: 20px;">关闭</div></div>
+<!--head Star -->
+<div id="head">
+  <div class="toolBar">
+  <div class="main">
+    <!--topNav Star -->
+    <div class="topNav clearfix">
+      <ul class="navList fl">
+        <li>
+          <div class="one"><a href="http://www.jb51.net/" target="_blank">脚本之家</a></div>
+        </li>
+        <li>
+          <div class="one"><a href="http://www.jb51.net/softs/" target="_blank">软件下载<i class="icon"></i></a></div>
+          <div class="two">
+                <a href="http://www.jb51.net/softs/android.html" target="_blank">android软件</a>
+                <a href="http://www.jb51.net/softs/mac.html" target="_blank">MAC软件</a>
+                <a href="http://www.jb51.net/fonts/%20target=" _blank"="">字体下载</a> <a href="http://www.jb51.net/dll/" target="_blank">DLL下载</a> </div>
+        </li>
+        <li>
+          <div class="one"><a href="http://www.jb51.net/codes/" target="_blank">源码下载<i class="icon"></i></a></div>
+          <div class="two"> <a href="http://www.jb51.net/codes/asp.html" target="_blank">asp源码</a> <a href="http://www.jb51.net/codes/php.html" target="_blank">php源码</a> <a href="http://www.jb51.net/codes/aspnet.html" target="_blank">asp.net源码</a> <a href="http://www.jb51.net/codes/jsp.html" target="_blank">jsp源码</a> <a href="http://www.jb51.net/codes/editor.html" target="_blank">网页编辑器</a> <a href="http://www.jb51.net/codes/list123_1.html" target="_blank">数据库管理</a> <a href="http://www.jb51.net/codes/list124_1.html" target="_blank">常用组件</a> </div>
+        </li>
+        <li>
+          <div class="one"><a href="http://tools.jb51.net/" target="_blank">在线工具<i class="icon"></i></a></div>
+          <div class="two"> <a href="http://www.jb51.net/shouce/" target="_blank">在线手册</a> <a href="http://www.jb51.net/tools/cssyasuo.shtml" target="_blank">CSS格式化</a> <a href="http://tools.jb51.net/tools/js_geshihua.asp" target="_blank">JS格式化</a> <a href="http://www.jb51.net/tools/html-js.htm" target="_blank">Html转化为Js</a> <a href="http://tools.jb51.net/regex/javascript" target="_blank">js正则表达式</a>
+</div>
+        </li>
+        <li>
+          <div class="one"><a href="http://www.jb51.net/w3school/" target="_blank">网页教程基础</a></div>
+        </li>
+			<li>
+          <div class="one"><a href="http://s.jb51.net/" target="_blank">服务器常用软件</a></div>
+        </li>
+		<li>
+          <div class="one"><a href="http://m.jb51.net/" target="_blank">手机版</a></div>
+          <div class="two"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/m.png"></div>     
+        </li>
+        <li class="watch">
+          <div class="one"><a href="http://weibo.com/jb51net" target="_blank" rel="nofollow"><i class="icon"></i>关注微信</a></div>
+          <div class="two"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/weixin_200.gif"></div>
+        </li>
+      </ul>
+      <div class="navUser mt5 fr" id="jb51_topbar"> </div>
+    </div>
+    <!--topNav End -->
+  </div>
+</div>
+
+  <div class="main clearfix">
+    <div class="mtb10 clearfix">
+      <div class="logo"><a href="http://www.jb51.net/"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/logo.gif" title="脚本之家" alt="脚本之家"></a></div>
+      <div class="logom fl" id="logo_m"><a href="http://www.danhw.com/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/kongbao_370.gif" height="60" width="370"></a></div>
+      <div class="logor fr" id="logo_r"><a href="http://www.51idc.com/activity/yeceremony.html" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/51idc_370.gif" height="60" width="370"></a></div>
+    </div>
+<!-- 导航-->
+<div class="nav_top clearfix">
+<ul>
+<li><a href="http://www.jb51.net/web/">网页制作</a></li>
+<li><a href="http://www.jb51.net/list/index_1.htm">网络编程</a></li>
+<li><a href="http://www.jb51.net/list/index_96.htm">脚本专栏</a></li>
+<li><a href="http://www.jb51.net/jiaoben/">脚本下载</a></li>
+<li><a href="http://www.jb51.net/list/index_104.htm">数据库</a></li>
+<li><a href="http://www.jb51.net/cms/">CMS教程</a></li>
+<li><a href="http://www.jb51.net/books/">电子书籍</a></li>
+<li><a href="http://www.jb51.net/pingmian/">平面设计</a></li>
+<li><a href="http://www.jb51.net/media/">媒体动画</a></li>
+<li><a href="http://www.jb51.net/os/">操作系统</a></li>
+<li><a href="http://www.jb51.net/yunying/">网站运营</a></li>
+<li><a href="http://www.jb51.net/hack/">网络安全</a></li>
+<li class="last"><a href="http://www.jb51.net/shouce/">在线手册</a></li>
+
+</ul>
+</div>
+
+<!--导航结束-->
+<div class="subnav clearfix">
+<ul><li><a href="http://www.jb51.net/list/list_66_1.htm" title="php基础">php基础</a></li>
+<li><a href="http://www.jb51.net/list/list_67_1.htm" title="php技巧">php技巧</a></li>
+<li><a href="http://www.jb51.net/list/list_68_1.htm" title="php实例">php实例</a></li>
+<li><a href="http://www.jb51.net/list/list_69_1.htm" title="php文摘">php文摘</a></li>
+<li><a href="http://www.jb51.net/list/list_146_1.htm" title="php模板">php模板</a></li>
+</ul>
+</div>
+<div class="NavBar clearfix ptb10">
+<div class="fl w690">
+<div class="box mb15 mt10"><i class="icon"></i>您的位置：<a href="http://www.jb51.net/">首页</a> → <a href="http://www.jb51.net/list/index_1.htm" title="网络编程">网络编程</a> → <a href="http://www.jb51.net/list/list_15_1.htm" title="PHP编程">PHP编程</a> → <a href="http://www.jb51.net/list/list_67_1.htm" title="php技巧">php技巧</a> → 正文内容 call_user_func和call_user_func_array</div>
+</div>
+<div class="fr w300"><div class="search">
+<form action="http://so.jb51.net/cse/search" target="_blank">
+    <input name="s" value="10520733385329581432" type="hidden">
+    <input name="ie" value="gbk" type="hidden">
+    <input name="q" class="key_input" placeholder="请输入关键词" type="text">
+    <input value="搜索" class="c_btn" type="submit">
+</form></div></div>
+  </div>
+</div>
+<!--head End -->
+<div class="main mb10 clearfix">
+<div class="tonglanad clearfix" id="tonglanbd"><script type="text/javascript">dy("tonglanbd")</script><script type="text/javascript">var cpro_id = "u336546";</script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/c.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u336546_0"><iframe id="iframeu336546_0" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_003.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="90" align="center,center" width="960"></iframe></div></div>
+<div class="blank5 clearfix"></div>
+<div class="clearfix mt10" id="tonglan1"><div id="txtlink"><ul><li><a href="http://www.jsll.me/" target="_blank"><span style="color:red;">低价出售流量10000IP只需8元</span></a></li><li><a href="http://click.aliyun.com/m/2160/" target="_blank"><span style="color:red;">【阿里云SSD云盘】速度行业领先</span></a></li><li><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=825781322&amp;site=qq&amp;menu=yes" target="_blank"><span style="color:red;">网站加速(加速乐)内部1折券【数量有限】</span></a></li><li><a href="http://www.ku86.com/" target="_blank"><span style="color:red;">百兆 12核24线程 16G内存 2T 999/月</span></a></li><li><a href="http://js.50bang.org/?formType=7858" target="_blank"><span style="color:blue;">装软件赚钱，每台电脑秒赚6.3元</span></a></li><li><a href="http://idc.jb51.net/" target="_blank"><span style="color:blue;">脚本之家云服务器、百独服务器托管</span></a></li><li><a href="http://www.vzidc.com/" target="_blank"><span style="color:blue;">微子网络 湛江双线高防 抗15G 700元起</span></a></li><li><a href="http://youhui.jb51.net/?txt" target="_blank"><span style="color:blue;">双11专题购物返利网，最高购物返利63%</span></a></li><li><a href="http://www.021.net/" target="_blank"><span style="color:red;">众生网络 基于云计算的互联网基础服务运营商</span></a></li><li><a href="http://www.tuidc.com/" target="_blank"><span style="color:red;">服务器租用/托管-域名空间/认准腾佑科技</span></a></li><li><a href="http://www.enkj.com/idc/tuoguan/" target="_blank"><span style="color:red;">BGP四线 亿恩1U服务器托管3999元/年</span></a></li><li><a href="http://www.jjidc.com/" target="_blank"><span style="color:red;">九九数据 — 工信部认可正规资质IDC接入商</span></a></li><li><a href="http://www.33ip.com/" target="_blank"><span style="color:blue;">枫信科技-江苏双线10M保证-399/元</span></a></li><li><a href="http://idc.jb51.net/?jb51" target="_blank"><span style="color:blue;">四核15M独享服务器特价188元/月</span></a></li><li><a href="http://www.ssf.cc/" target="_blank"><span style="color:blue;">免备vps20/百独799/双线350/45互联</span></a></li><li><a href="http://idc.jb51.net/" target="_blank"><span style="color:blue;">脚本之家 云服务器、百独服务器托管</span></a></li><li><a href="http://www.139w.com/100m.asp" target="_blank"><span style="color:red;">鼎点网络百兆独享服务器仅需999元</span></a></li><li><a href="http://www.163cdn.com/" target="_blank"><span style="color:red;">免备案国内虚拟主机-163cdn</span></a></li><li><a href="http://www.cyidc.cc/" target="_blank"><span style="color:red;">畅游网络 百独服务器 包跑满 998元</span></a></li><li><a href="http://www.wdw6.com/" target="_blank"><span style="color:red;">服务器租用  199元起</span></a></li></ul><div class="clearfix"></div></div><div class="blank3"></div><div class="blank3"></div><div class="topimg"><ul><li><a href="http://www.west.cn/services/CloudHost/?ads=jb512014" target="_blank"><img alt="" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/west263_237.gif" height="60" width="237"></a></li><li><a href="http://www.zuiis.com/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/zuiis.gif" alt="云主机" height="60" width="237"></a></li><li><a href="http://www.ku86.com/" target="_blank"><img alt="" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/idcjb51_237.gif" height="60" width="237"></a></li><li><a href="http://www.7e.hk/" target="_blank"><img alt="" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/7ehk.gif" height="60" width="237"></a></li></ul></div><div class="blank3"></div><div class="mainlr"><a href="http://click.aliyun.com/m/3324/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/aliyun1000.gif" alt="阿里云" height="60" width="1000"></a></div><div class="blank3"></div></div>
+</div>
+
+<!--content Star -->
+<div id="contents">
+ <div class="main clearfix">
+      <div class="w690 fl">
+      <div class="article-content border">
+      <div class="title">
+            <h1 class="YaHei">php自定义函数call_user_func和call_user_func_array详解</h1>
+            <p>作者：  字体：[<a href="javascript:turnbig()">增加</a> <a href="javascript:turnsmall()">减小</a>] 类型：转载 时间：2011-07-14<a href="#comments"> 我要评论</a></p>
+        </div>
+        <div class="art_desc mt10"><div id="art_demo">看UCenter的时候有一个函数call_user_func，百思不得其解，因为我以为是自己定义的函数，结果到处都找不到，后来百度了一下才知道call_user_func是内置函数</div></div>
+        <div class="lbd clearfix" id="bdctop"><script type="text/javascript">dy("art_up")</script><script type="text/javascript">var cpro_id="u2261530";(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"680",rsi1:"200",pat:"6",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"1",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0",ptbg:"90",piw:"0",pih:"0",ptp:"0"}</script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/c.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u2261530_0"><iframe id="iframeu2261530_0" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_004.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="200" align="center,center" width="680"></iframe></div></div>
+        <div id="content">
+call_user_func函数类似于一种特别的调用函数的方法，使用方法如下： <br><div class="codetitle"><span><a style="CURSOR: pointer" data="10555" class="copybut" id="copybut10555" onclick="doCopy('code10555')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code10555"> <br>function a($b,$c) <br>{ <br>echo $b; <br>echo $c; <br>} <br>call_user_func('a', "111","222"); <br>call_user_func('a', "333","444"); <br>//显示 111 222 333 444 <br>?&gt; <br></div> <br>调用类内部的方法比较奇怪，居然用的是array，不知道开发者是如何考虑的，当然省去了new，也是满有新意的: <br><div class="codetitle"><span><a style="CURSOR: pointer" data="2269" class="copybut" id="copybut2269" onclick="doCopy('code2269')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code2269"> <br>class a { <br>function b($c) <br>{ <br>echo $c; <br>} <br>} <br>call_user_func(array("a", "b"),"111"); <br>//显示 111 <br>?&gt; <br></div> <br>call_user_func_array函数和call_user_func很相似，只不过是换了一种方式传递了参数，让参数的结构更清晰: <br><div class="codetitle"><span><a style="CURSOR: pointer" data="80243" class="copybut" id="copybut80243" onclick="doCopy('code80243')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code80243"> <br>function a($b, $c) <br>{ <br>echo $b; <br>echo $c; <br>} <br>call_user_func_array('a', array("111", "222")); <br>//显示 111 222 <br>?&gt; <br></div> <br>call_user_func_array函数也可以调用类内部的方法的 <br><div class="codetitle"><span><a style="CURSOR: pointer" data="19764" class="copybut" id="copybut19764" onclick="doCopy('code19764')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code19764"> <br>Class ClassA <br>{ <br>function bc($b, $c) { <br>$bc = $b + $c; <br>echo $bc; <br>} <br>} <br>call_user_func_array(array('ClassA','bc'), array("111", "222")); <br>//显示 333 <br>?&gt; <br></div> <br>call_user_func函数和call_user_func_array函数都支持引用，这让他们和普通的函数调用更趋于功能一致: <br><div class="codetitle"><span><a style="CURSOR: pointer" data="1201" class="copybut" id="copybut1201" onclick="doCopy('code1201')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code1201"> <br>function a(&amp;$b) <br>{ <br>$b++; <br>} <br>$c = 0; <br>call_user_func('a', &amp;$c); <br>echo $c;//显示 1 <br>call_user_func_array('a', array(&amp;$c)); <br>echo $c;//显示 2 <br></div> <br>php之call_user_func_array的简易用法 <br>今天在群里面，有个叫lewis的在问call_user_func_array的用法，因为之前一直没有用过，也不能说什么，于是看一下手册，发现是这么写的： <br>call_user_func_array <br>(PHP 4 &gt;= 4.0.4, PHP 5) <br>call_user_func_array -- Call a user function given with an array of parametersDescription <br>mixed call_user_func_array ( callback function, array param_arr ) <br>Call a user defined function given by function, with the parameters in param_arr. <br>然后还有一个例子： <br><div class="codetitle"><span><a style="CURSOR: pointer" data="83447" class="copybut" id="copybut83447" onclick="doCopy('code83447')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code83447"> <br>&lt;?php <br>function foobar($arg, $arg2) { <br>echo __FUNCTION__, " got $arg and $arg2\n"; <br>} <br>class foo { <br>function bar($arg, $arg2) { <br>echo __METHOD__, " got $arg and $arg2\n"; <br>} <br>} <br>// Call the foobar() function with 2 arguments <br>call_user_func_array("foobar", array("one", "two")); <br>// Call the $foo-&gt;bar() method with 2 arguments <br>$foo = new foo; <br>call_user_func_array(array($foo, "bar"), array("three", "four")); <br>?&gt; <br></div> <br>以上例程的输出类似于： <br>foobar got one and two <br>foo::bar got three and four <br>Example #2 call_user_func_array() using namespace name <br><div class="codetitle"><span><a style="CURSOR: pointer" data="10151" class="copybut" id="copybut10151" onclick="doCopy('code10151')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code10151"> <br>&lt;?php <br>namespace Foobar; <br>class Foo { <br>static public function test($name) { <br>print "Hello {$name}!\n"; <br>} <br>} <br>// As of PHP 5.3.0 <br>call_user_func_array(__NAMESPACE__ .'\Foo::test', array('Hannes')); <br>// As of PHP 5.3.0 <br>call_user_func_array(array(__NAMESPACE__ .'\Foo', 'test'), array('Philip')); <br>?&gt; <br></div> <br>以上例程的输出类似于： <br>Hello Hannes! <br>Hello Philip! <br>Example #3 Using lambda function <br><div class="codetitle"><span><a style="CURSOR: pointer" data="30041" class="copybut" id="copybut30041" onclick="doCopy('code30041')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code30041"> <br>&lt;?php <br>$func = function($arg1, $arg2) { <br>return $arg1 * $arg2; <br>}; <br>var_dump(call_user_func_array($func, array(2, 4))); /* As of PHP 5.3.0 */ <br>?&gt; <br></div> <br>以上例程会输出： <br>int(8) <br>相信看了例子之后应该有点明白了吧？ <br>我自己是这么理解这个函数的，如果说的不对，还望各位高手不要耻笑： <br>该
+函数真正的用法有点类似于函数重载，因为他的第一个参数是字符型的，也就是函数的名称，第二个参数是数组，我们可以当成该函数的各个参数，而事实上也就是
+这么用的，如果你看过我的前一篇文章：PHP的伪重载 ，或许你能够理解，正是因为这个函数的存在，我发现函数重载也可以这样运用： <br><div class="codetitle"><span><a style="CURSOR: pointer" data="96929" class="copybut" id="copybut96929" onclick="doCopy('code96929')"><u>复制代码</u></a></span> 代码如下:</div><div class="codebody" id="code96929"> <br>/** <br>* 例子写完后，本来认为完事了，结果遇到有人问call_user_func_array(),看了一下手册 <br>* 原来，我上面的那个test函数还可以精简成如下的例子， <br>*/ <br>function otest1 ($a) <br>{ <br>echo( '一个参数' ); <br>} <br>function otest2 ( $a, $b) <br>{ <br>echo( '二个参数' ); <br>} <br>function otest3 ( $a ,$b,$c) <br>{ <br>echo( '三个啦' ); <br>} <br>function otest () <br>{ <br>$args = func_get_args(); <br>$num = func_num_args(); <br>call_user_func_array( 'otest'.$num, $args ); <br>} <br>otest(1,2); <br></div> <br>看到不？而我最初的写法，在PHP的伪重载一文中有所提及，仅作参考。。。。
+
+</div><!--endmain-->
+<div class="art_xg">
+<h4>您可能感兴趣的文章:</h4><ul><li><a href="http://www.jb51.net/article/4985.htm" title="使PHP自定义函数返回多个值" target="_blank">使PHP自定义函数返回多个值</a></li><li><a href="http://www.jb51.net/article/31378.htm" title="Thinkphp模板中使用自定义函数的方法" target="_blank">Thinkphp模板中使用自定义函数的方法</a></li><li><a href="http://www.jb51.net/article/40337.htm" title="解析php中如何调用用户自定义函数" target="_blank">解析php中如何调用用户自定义函数</a></li><li><a href="http://www.jb51.net/article/48841.htm" title="PHP二维数组排序的3种方法和自定义函数分享" target="_blank">PHP二维数组排序的3种方法和自定义函数分享</a></li><li><a href="http://www.jb51.net/article/55704.htm" title="PHP实现手机号码中间四位用星号（*）隐藏的自定义函数分享" target="_blank">PHP实现手机号码中间四位用星号（*）隐藏的自定义函数分享</a></li><li><a href="http://www.jb51.net/article/56984.htm" title="ThinkPHP模板之变量输出、自定义函数与判断语句用法" target="_blank">ThinkPHP模板之变量输出、自定义函数与判断语句用法</a></li><li><a href="http://www.jb51.net/article/60465.htm" title="PHP实现的下载远程图片自定义函数分享" target="_blank">PHP实现的下载远程图片自定义函数分享</a></li><li><a href="http://www.jb51.net/article/61377.htm" title="分享一则PHP定义函数代码" target="_blank">分享一则PHP定义函数代码</a></li></ul>
+</div>
+<div id="bot_ad" class="lbd clearfix">
+<script type="text/javascript">
+var cpro_id="u776243";
+(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"650",rsi1:"250",pat:"1",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"0",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0",tft:"0",tlt:"1",ptbg:"90",piw:"0",pih:"0",ptp:"0"}
+</script>
+<script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/c.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u776243_0"><iframe id="iframeu776243_0" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_005.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="250" align="center,center" width="650"></iframe></div>
+</div>
+<div id="shoucang">
+    <div data-bd-bind="1452822750838" class="bdsharebuttonbox bdshare-button-style0-16"><a class="bds_more" href="http://share.baidu.com/code#" data-cmd="more"></a><a class="bds_qzone" title="分享到QQ空间" href="http://share.baidu.com/code#" data-cmd="qzone"></a><a class="bds_tsina" title="分享到新浪微博" href="http://share.baidu.com/code#" data-cmd="tsina"></a><a class="bds_tqq" title="分享到腾讯微博" href="http://share.baidu.com/code#" data-cmd="tqq"></a><a class="bds_renren" title="分享到人人网" href="http://share.baidu.com/code#" data-cmd="renren"></a><a class="bds_weixin" title="分享到微信" href="http://share.baidu.com/code#" data-cmd="weixin"></a></div>
+</div>
+<div class="tags mt10">
+<strong>Tags：</strong><a href="http://img.jb51.net/tag/call+user+func/1.htm" target="_blank" title="搜索关于call user func的文章">call user func</a> <a href="http://img.jb51.net/tag/call+user+func+array/1.htm" target="_blank" title="搜索关于call user func array的文章">call user func array</a> 
+</div>
+<div class="relatedarticle clearfix mt5">
+<h2>相关文章</h2>
+<ul><li><span>2015-06-06</span><a href="http://www.jb51.net/article/68183.htm" title="php强制用户转向www域名的方法" target="_blank">php强制用户转向www域名的方法</a></li><li><span>2015-07-07</span><a href="http://www.jb51.net/article/69433.htm" title="浅谈php的优缺点" target="_blank">浅谈php的优缺点</a></li><li><span>2014-11-11</span><a href="http://www.jb51.net/article/57176.htm" title="php中常见的sql攻击正则表达式汇总" target="_blank">php中常见的sql攻击正则表达式汇总</a></li><li><span>2015-02-02</span><a href="http://www.jb51.net/article/61039.htm" title="php+Mysqli利用事务处理转账问题实例" target="_blank">php+Mysqli利用事务处理转账问题实例</a></li><li><span>2015-08-08</span><a href="http://www.jb51.net/article/70798.htm" title="php自动识别文字编码并转换为目标编码的方法" target="_blank">php自动识别文字编码并转换为目标编码的方法</a></li><li><span>2015-03-03</span><a href="http://www.jb51.net/article/63028.htm" title="php实现的一个简单json rpc框架实例" target="_blank">php实现的一个简单json rpc框架实例</a></li><li><span>2008-12-12</span><a href="http://www.jb51.net/article/16913.htm" title="PHP MSSQL 存储过程的方法" target="_blank">PHP MSSQL 存储过程的方法</a></li><li><span>2007-01-01</span><a href="http://www.jb51.net/article/6630.htm" title="增加反向链接的101个方法 站长推荐" target="_blank">增加反向链接的101个方法 站长推荐</a></li><li><span>2015-05-05</span><a href="http://www.jb51.net/article/65899.htm" title="PHP 反射(Reflection)使用实例" target="_blank">PHP 反射(Reflection)使用实例</a></li><li><span>2008-01-01</span><a href="http://www.jb51.net/article/13376.htm" title="逐步提升php框架的性能" target="_blank">逐步提升php框架的性能</a></li></ul>
+</div>
+<div class="lbd clearfix mt5">
+<script type="text/javascript">
+var cpro_id="u2261530";
+(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"680",rsi1:"200",pat:"6",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"1",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0",ptbg:"90",piw:"0",pih:"0",ptp:"0"}
+</script>
+<script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/c.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u2261530_1"><iframe id="iframeu2261530_1" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_006.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="200" align="center,center" width="680"></iframe></div>
+</div>
+<a href="#comments"></a>
+<div id="comments">
+<h2>最新评论</h2>
+<div class="pd5"><div style="width: 100%; height: auto;" id="SOHUCS" sid="art_27696"><div id="SOHU_MAIN"><div id="SOHU-comment-main" class="sohu-comment-wrapper"><div id="article_info_sohu">        <div class="reset-g clear-g section-title-w  section-title-logoutStyle">
+            <div class="title-join-w">
+                <div class="join-wrap-w join-wrap-b"><strong class="wrap-name-w wrap-name-b">评论</strong><span class="wrap-join-w wrap-join-b">(<em class="join-strong-gw join-strong-bg">34</em><span node-type="involved">人参与</span><i class="gap-b">，</i><em class="join-strong-gw join-strong-bg">3</em><span node-type="comments">条评论</span>)</span></div>
+            </div>
+            <div class="title-user-w">
+                <div style="display: none;" node-type="sohu-pact" class="title-link-w"><a href="http://zt.pinglun.sohu.com/s2014/sljyhgy/index.shtml" target="_blank">搜狐“我来说两句”用户公约</a></div>
+            </div>
+        </div>
+        </div><div id="login_sohu"></div><div id="comment_sohu"><div node-type="cbox-wrapper" class="reset-g section-cbox-w"><div style="width:1px;height:1px;overflow:hidden;"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/vcode.jpg" style="visibility:hidden;width:1px;height:1px;"></div><div class="clear-g cbox-block-w">
+            <div class="block-head-w">
+                <div class="head-img-w">
+                                        <a node-type="user-avatar" href="javascript:void(0)" target="_self"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/pic42_null.gif" onerror="SOHUCS.isImgErr(this)" alt="" height="42" width="42"></a>
+                    </div>
+                <!--
+                -->
+            </div>
+        <div class="block-post-w block-post-default-e"><div class="post-wrap-w post-wrap-b"><div class="wrap-area-w"><div class="area-textarea-w" style="position:relative;zoom:1;z-index:9;"><textarea name="" class="textarea-fw textarea-bf">来说两句吧...</textarea></div></div><div class="clear-g wrap-action-w wrap-action-b"><div class="action-function-w action-function-b relative-z-w"><ul class="clear-g"><li class="function-face-w"><a href="javascript:void(0)" class="effect-w" title="表情"><i class="face-b"></i></a></li><li class="function-uploadimg-w"><a href="javascript:void(0)" class="effect-w" title="上传图片"><i class="uploadimg-b"></i></a><div class="uploadimg-file-w"><input class="file-fw" id="img_upload" name="file" accept="image/*" type="file"></div><div class="img-btn-cover" style="width:40px;height:40px;margin-top:-40px;z-index:-1;position: relative;"></div></li><!--<li class="function-at-w"><a href="javascript:void(0)" class="effect-w"><i class="at-b"></i></a></li>--></ul></div><div class="clear-g action-issue-w"><div class="issue-btn-w"><a href="javascript:void(0)"><button class="btn-fw btn-bf btn-fw-main">发布</button></a></div></div></div></div>
+                                    <div node-type="login-list" class="post-login-w">
+                <ul class="clear-g">
+                                                            <li style="display:block">
+                        <div class="login-wrap-w login-wrap-b">
+                            <a data-key="sina" target="_self" href="javascript:;" title="新浪微博" alt="新浪微博">
+                                <span class="wrap-icon-w icon30-sina-b"></span><span class="wrap-name-w wrap-name-b">微博登录</span>
+                            </a>
+                        </div>
+                    </li>
+                                        <li style="display:block">
+                        <div class="login-wrap-w login-wrap-b">
+                            <a data-key="qq" target="_self" href="javascript:;" title="QQ" alt="QQ">
+                                <span class="wrap-icon-w icon30-qq-b"></span><span class="wrap-name-w wrap-name-b">QQ登录</span>
+                            </a>
+                        </div>
+                    </li>
+                                        <li>
+                        <div class="login-wrap-w login-wrap-b login-wrap-visitor-b">
+                            <a data-key="visitor" target="_self" href="javascript:void(0)">
+                                <span class="wrap-icon-w icon30-visitor-b"></span><span class="wrap-name-w wrap-name-b">游客</span>
+                            </a>
+                        </div>
+                    </li>
+                    </ul>
+            </div>
+            </div></div><div node-type="prompt-no-privilege" class="cbox-prompt-w" style="display: none;">
+            <span class="prompt-empty-w prompt-empty-b">等级不够，发表评论升至指定级别才能获得该特权。详情请参见<a node-type="privilege-intro" href="javascript:;">等级说明</a>。</span>
+        </div></div></div><div id="list_sort_sohu"></div><div topicid="557889105" id="list_sohu">        <div class="reset-g section-list-w">                                                            <div class="list-block-gw list-newest-w list-newest-b">                <div class="block-title-gw">                    <ul class="clear-g">                        <li><strong class="title-name-gw title-name-bg">最新评论</strong></li>                    </ul>                </div>                                <div class="clear-g block-cont-gw block-cont-bg" datatype="time" cmtnum="0" cmtid="777340757">                    <div class="cont-head-gw">                        <div class="head-img-gw"><a href="javascript:void(0)" commhref="javascript:void(0)"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/fac494264beff70ed91fedf32783552b_default_1449555807065_jpg.jpg" onerror="SOHUCS.isImgErr(this)" alt="" uid="277873034" height="42" width="42"></a></div>                    </div>                    <div class="cont-msg-gw">                        <div class="msg-wrap-gw">                            <div class="wrap-user-gw global-clear-spacing">                                <span class="user-time-gw user-time-bg evt-time">2015年8月10日 15:51</span>
+                                                                        
+                                                            <span class="user-name-gw" title="死不了"><a href="javascript:void(0)" commhref="javascript:void(0)" uid="277873034">死不了</a></span>                                                                <!-- 管理员、铭牌图标 -->
+                                                                        
+                                                                        
+                    <!-- 管理员、铭牌图标 END -->                                <span class="user-address-gw">[<i>北京市</i>网友]</span>                                                            </div>                                                                                    <div class="wrap-issue-gw">                                <p class="issue-wrap-gw">                                    <span class="wrap-word-bg ">222222222222</span>                                </p>                            </div>                                                        <div class="clear-g wrap-action-gw">                                <div class="action-click-gw">                                    <i class="gap-gw"></i>                                    <span class="click-ding-gw"><a href="javascript:void(0)" title="顶" class="evt-support"><i class="icon-gw icon-ding-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-cai-gw"><a href="javascript:void(0)" title="踩" class="evt-opposed"><i class="icon-gw icon-cai-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-reply-gw click-reply-eg"><a href="javascript:void(0)" class="evt-reply">回复</a></span><i class="gap-gw"></i><span class="click-share-gw click-reply-eg"><a href="javascript:void(0)" class="evt-share">分享</a></span>                                </div>                                <div class="action-from-gw action-from-bg"></div>                            </div>                            <div class="wrap-reply-gw"></div>                        </div>                    </div>                </div>                            <div class="clear-g block-cont-gw block-cont-bg" datatype="time" cmtnum="1" cmtid="777340402">                    <div class="cont-head-gw">                        <div class="head-img-gw"><a href="javascript:void(0)" commhref="javascript:void(0)"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/fac494264beff70ed91fedf32783552b_default_1449555807065_jpg.jpg" onerror="SOHUCS.isImgErr(this)" alt="" uid="277873034" height="42" width="42"></a></div>                    </div>                    <div class="cont-msg-gw">                        <div class="msg-wrap-gw">                            <div class="wrap-user-gw global-clear-spacing">                                <span class="user-time-gw user-time-bg evt-time">2015年8月10日 15:51</span>
+                                                                        
+                                                            <span class="user-name-gw" title="死不了"><a href="javascript:void(0)" commhref="javascript:void(0)" uid="277873034">死不了</a></span>                                                                <!-- 管理员、铭牌图标 -->
+                                                                        
+                                                                        
+                    <!-- 管理员、铭牌图标 END -->                                <span class="user-address-gw">[<i>北京市</i>网友]</span>                                                            </div>                            <div class="wrap-build-gw"><div class="build-floor-gw">        <!--div class="build-floor-gw"-->            <div class="build-msg-gw borderbot" cmtid="777340595" floornum="1">                <div class="wrap-user-gw global-clear-spacing">                    <span class="user-time-gw user-time-bg user-floor-gw">1</span>                    <span class="user-name-gw"><a href="javascript:void(0)" commhref="javascript:void(0)" title="死不了" uid="277873034">死不了</a></span>                                        <span class="user-address-gw">[<i>北京市</i>网友]</span>                                    </div>                <!--div class="wrap-hidden-gw wrap-hidden-bg"><a href="#">评论已被折叠，查看请点击。</a></div-->                <div class="wrap-issue-gw">                    <p class="issue-wrap-gw">                        <span class="wrap-word-bg ">啊啊啊啊啊啊啊啊啊啊啊啊啊擦</span>                    </p>                </div>            <!-- picture show  Begin -->                            <!-- picture show  End -->                <div class="clear-g wrap-action-gw evt-active-wrapper" style="visibility: hidden">                    <div class="action-click-gw">                        <i class="gap-gw"></i>                        <span class="click-ding-gw"><a href="javascript:void(0)" title="顶" class="evt-support"><i class="icon-gw icon-ding-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-cai-gw"><a href="javascript:void(0)" title="踩" class="evt-opposed"><i class="icon-gw icon-cai-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-reply-gw click-reply-eg"><a href="javascript:void(0)" class="evt-reply">回复</a></span><i class="gap-gw"></i><span class="click-share-gw click-reply-eg"><a href="javascript:void(0)" class="evt-share">分享</a></span>                    </div>                    <div class="action-from-gw action-from-bg"></div>                </div>                <div class="wrap-reply-gw">                    <!-- reply area  Begin -->                    <!-- reply area  End -->                </div>            </div>        <!--/div--></div></div>                                                        <div class="wrap-issue-gw">                                <p class="issue-wrap-gw">                                    <span class="wrap-word-bg ">111111111111</span>                                </p>                            </div>                                                        <div class="clear-g wrap-action-gw">                                <div class="action-click-gw">                                    <i class="gap-gw"></i>                                    <span class="click-ding-gw"><a href="javascript:void(0)" title="顶" class="evt-support"><i class="icon-gw icon-ding-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-cai-gw"><a href="javascript:void(0)" title="踩" class="evt-opposed"><i class="icon-gw icon-cai-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-reply-gw click-reply-eg"><a href="javascript:void(0)" class="evt-reply">回复</a></span><i class="gap-gw"></i><span class="click-share-gw click-reply-eg"><a href="javascript:void(0)" class="evt-share">分享</a></span>                                </div>                                <div class="action-from-gw action-from-bg"></div>                            </div>                            <div class="wrap-reply-gw"></div>                        </div>                    </div>                </div>                            <div class="clear-g block-cont-gw block-cont-bg" datatype="time" cmtnum="2" cmtid="777340595">                    <div class="cont-head-gw">                        <div class="head-img-gw"><a href="javascript:void(0)" commhref="javascript:void(0)"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/fac494264beff70ed91fedf32783552b_default_1449555807065_jpg.jpg" onerror="SOHUCS.isImgErr(this)" alt="" uid="277873034" height="42" width="42"></a></div>                    </div>                    <div class="cont-msg-gw">                        <div class="msg-wrap-gw">                            <div class="wrap-user-gw global-clear-spacing">                                <span class="user-time-gw user-time-bg evt-time">2015年8月10日 15:51</span>
+                                                                        
+                                                            <span class="user-name-gw" title="死不了"><a href="javascript:void(0)" commhref="javascript:void(0)" uid="277873034">死不了</a></span>                                                                <!-- 管理员、铭牌图标 -->
+                                                                        
+                                                                        
+                    <!-- 管理员、铭牌图标 END -->                                <span class="user-address-gw">[<i>北京市</i>网友]</span>                                                            </div>                                                                                    <div class="wrap-issue-gw">                                <p class="issue-wrap-gw">                                    <span class="wrap-word-bg ">啊啊啊啊啊啊啊啊啊啊啊啊啊擦</span>                                </p>                            </div>                                                        <div class="clear-g wrap-action-gw">                                <div class="action-click-gw">                                    <i class="gap-gw"></i>                                    <span class="click-ding-gw"><a href="javascript:void(0)" title="顶" class="evt-support"><i class="icon-gw icon-ding-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-cai-gw"><a href="javascript:void(0)" title="踩" class="evt-opposed"><i class="icon-gw icon-cai-bg"></i><em class="icon-name-bg"></em></a></span><i class="gap-gw"></i><span class="click-reply-gw click-reply-eg"><a href="javascript:void(0)" class="evt-reply">回复</a></span><i class="gap-gw"></i><span class="click-share-gw click-reply-eg"><a href="javascript:void(0)" class="evt-share">分享</a></span>                                </div>                                <div class="action-from-gw action-from-bg"></div>                            </div>                            <div class="wrap-reply-gw"></div>                        </div>                    </div>                </div>                        </div>                    </div></div><div id="list_hot"></div><div id="page_sohu"></div><div id="more_list_sohu"></div><div id="powerby_sohu">        <div class="reset-g section-service-w">
+            <div class="service-wrap-w service-wrap-b"><a node-type="powered-by" href="http://changyan.sohu.com/?from=changyan" target="_blank">Powered by 畅言</a></div>
+        </div></div></div></div></div></div>
+</div>
+      </div><!--endborder-->
+      </div><!--end fl-->
+      
+<div class="w300 fr">
+<div class="r300 clearfix" id="r1"><script async="" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/adsbygoogle.js"></script><ins data-adsbygoogle-status="done" class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-6384567588307613" data-ad-slot="2817964327"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" frameborder="0" height="250" width="300"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+<div class="tabTitleBar mt10 bgf borderTblue">
+<div class="borderTnone pb10 YaHei">
+<h4 class="blue">大家感兴趣的内容</h4>
+<ul class="newsList newList-in">
+<li><em class="no1">1</em><a href="http://www.jb51.net/article/30489.htm" title="php中json_decode()和json_encode()的使用方法" target="_blank">php中json_decode()和json_encod</a></li><li><em class="no2">2</em><a href="http://www.jb51.net/article/14530.htm" title="php中iconv函数使用方法" target="_blank">php中iconv函数使用方法</a></li><li><em class="no3">3</em><a href="http://www.jb51.net/article/21228.htm" title="PHPMyadmin 配置文件详解(配置)" target="_blank">PHPMyadmin 配置文件详解(配置)</a></li><li><em class="no4">4</em><a href="http://www.jb51.net/article/19011.htm" title="PHP 页面跳转到另一个页面的多种方法方法总结" target="_blank">PHP 页面跳转到另一个页面的多种</a></li><li><em class="no5">5</em><a href="http://www.jb51.net/article/15330.htm" title="特详细的PHPMYADMIN简明安装教程" target="_blank">特详细的PHPMYADMIN简明安装教程</a></li><li><em class="no6">6</em><a href="http://www.jb51.net/article/34745.htm" title="PHP中使用cURL实现Get和Post请求的方法" target="_blank">PHP中使用cURL实现Get和Post请求</a></li><li><em class="no7">7</em><a href="http://www.jb51.net/article/35077.htm" title="PHP 数组和字符串互相转换实现方法" target="_blank">PHP 数组和字符串互相转换实现方</a></li><li><em class="no8">8</em><a href="http://www.jb51.net/article/15174.htm" title="php下intval()和(int)转换使用与区别" target="_blank">php下intval()和(int)转换使用与</a></li><li><em class="no9">9</em><a href="http://www.jb51.net/article/30810.htm" title="php日期转时间戳,指定日期转换成时间戳" target="_blank">php日期转时间戳,指定日期转换成</a></li><li><em class="no10">10</em><a href="http://www.jb51.net/article/22501.htm" title="PHP 页面编码声明方法详解(header或meta)" target="_blank">PHP 页面编码声明方法详解(heade</a></li>
+</ul>
+</div>
+</div>
+<div class="r300 clearfix mt10" id="r2"><a href="http://click.aliyun.com/m/2717/" target="_blank"><img alt="" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/aliyun300.gif"></a><div class="blank3"></div></div>
+<div class="tabTitleBar mt10 bgf borderTblue">
+<div class="borderTnone pb10 YaHei">
+<h4 class="blue">最近更新的内容</h4>
+<ul class="newsListA">
+<ul><li><a href="http://www.jb51.net/article/27863.htm" title="linux下使用ThinkPHP需要注意大小写导致的问题" target="_blank">linux下使用ThinkPHP需要注意大小写导致的</a></li><li><a href="http://www.jb51.net/article/27941.htm" title="php中设置多级目录session的问题" target="_blank">php中设置多级目录session的问题</a></li><li><a href="http://www.jb51.net/article/38260.htm" title="joomla jce editor 解决上传中文名文件失败问题" target="_blank">joomla jce editor 解决上传中文名文件失</a></li><li><a href="http://www.jb51.net/article/44030.htm" title="php 模拟 asp.net webFrom 按钮提交事件的思路及代码" target="_blank">php 模拟 asp.net webFrom 按钮提交事件的</a></li><li><a href="http://www.jb51.net/article/27563.htm" title="php中批量删除Mysql中相同前缀的数据表的代码" target="_blank">php中批量删除Mysql中相同前缀的数据表的</a></li><li><a href="http://www.jb51.net/article/6265.htm" title="在数据量大（超过10万）的情况下" target="_blank">在数据量大（超过10万）的情况下</a></li><li><a href="http://www.jb51.net/article/38600.htm" title="PHP与MongoDB简介|安全|M+PHP应用实例详解" target="_blank">PHP与MongoDB简介|安全|M+PHP应用实例详解</a></li><li><a href="http://www.jb51.net/article/47554.htm" title="php 表单提交大量数据发生丢失的解决方法" target="_blank">php 表单提交大量数据发生丢失的解决方法</a></li><li><a href="http://www.jb51.net/article/59430.htm" title="php实现计数器方法小结" target="_blank">php实现计数器方法小结</a></li><li><a href="http://www.jb51.net/article/5619.htm" title="一个PHP模板,主要想体现一下思路" target="_blank">一个PHP模板,主要想体现一下思路</a></li></ul>
+</ul>
+</div>
+</div>   
+<div class="r300 clearfix mt10" id="idctu1"><a href="http://tuidc.com/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/tengyou300.gif" height="100" width="300"></a><div class="blank3"></div><a href="http://www.enkj.com/encloud/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/enkj_300.gif" alt="云服务器" height="100" width="300"></a></div>
+<div class="tabTitleBar mt10 bgf borderTblue">
+<div class="borderTnone pb10 YaHei">
+<h4 class="blue">常用在线小工具</h4>
+<ul class="newsListA" id="bctools"><li><a href="http://www.jb51.net/tools/cssyasuo.shtml" target="_blank"><font color="red">CSS在线压缩格式化(中文)</font></a></li><li><a href="http://tools.jb51.net/tools/js_geshihua.asp" target="_blank"><font color="red">JavaScript 格式化整理工具</font></a></li><li><a href="http://www.jb51.net/tools/html-js.htm" target="_blank">HTML/JS互相转换工具</a></li><li><a href="http://www.jb51.net/tools/packer.htm" target="_blank"><font color="red">javascript pack加密压缩工具</font></a></li><li><a href="http://www.jb51.net/tools/jsmin/index.htm" target="_blank">JS Minifier压缩</a></li> <li><a href="http://www.jb51.net/tools/js_Debug.htm" target="_blank">在线JS脚本校验器错误</a></li><li><a href="http://tools.jb51.net/tools/regex.asp" target="_blank">JavaScript 正则表达式在线测试工具</a></li><li><a href="http://tools.jb51.net//tools/Escape.asp" target="_blank">Escape加解密</a></li><li><a href="http://www.jb51.net/tools/htmlto.htm" target="_blank">HTML多功能代码转换器</a></li><li><a href="http://www.jb51.net/tools/xunleijm.htm" target="_blank">迅雷快车加/解密</a></li></ul>
+</div>
+</div>
+<div class="r300 clearfix mt10" id="idctu2"><a href="http://www.geisnic.com/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/gs.gif" height="100" width="300"></a><div class="blank3"></div><a href="http://www.33ip.com/" target="_blank"><img src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/33ip_300.gif" height="100" width="300"></a></div>
+<div class="r300 clearfix mt10" id="r3">
+<script type="text/javascript">
+var cpro_id="u1397867";
+</script>
+<script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/c.js" type="text/javascript"></script><div style="width: 300px; height: 250px; margin: 0px; padding: 0px; background: transparent none repeat scroll 0% 0%; border: medium none; display: inline-block;" id="BAIDU_EXP_UNION__wrapper_u1397867_0_placeholder"></div><div style="width: 300px; height: 250px; display: inline-block; z-index: 2147483646; position: fixed; left: 916px; top: 5px;" id="BAIDU_EXP_UNION__wrapper_u1397867_0"><iframe id="iframeu1397867_0" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/acom_007.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="250" align="center,center" width="300"></iframe></div>
+</div>
+      
+      
+      </div><!--end fr-->
+      </div>
+</div><!--end content-->
+<div id="footer">
+<div class="main clearfix">
+<p>
+<a href="http://www.jb51.net/about.htm" target="_blank">关于我们</a> - 
+<a href="http://www.jb51.net/support.htm" target="_blank">广告合作</a> - 
+<a href="http://www.jb51.net/linkus.htm" target="_blank">联系我们</a> -  
+<a href="http://www.jb51.net/sm.htm" target="_blank">免责声明</a> -  
+<a href="http://www.jb51.net/sitemap.htm" target="_blank">网站地图</a> - 
+<a href="tencent://message/?uin=461478385&amp;Site=http://www.jb51.net" target="_blank">投诉建议</a> - 
+<a href="http://www.jb51.net/up.htm" target="_blank">在线投稿</a>
+</p>
+<p>&#169;CopyRight 2006-2016 JB51.Net Inc All Rights Reserved. 脚本之家 版权所有</p>
+</div>
+</div><!--end footer-->
+<link type="text/css" rel="stylesheet" href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/shThemeDefault.css">
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/shCore.js"></script>
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/shAutoloader.js"></script>
+<script type="text/javascript"> 
+if (top.location != self.location)top.location=self.location;
+$('#content').find('img').each(function(){
+        var img = this;
+        if (img.width >= 650){
+            img.style.width = "650px";
+            img.style.height = "auto";
+            //$(img).removeAttr('height');
+            var aTag = document.createElement('a');
+            aTag.href = img.src;
+			aTag.target="_blank";
+            $(aTag).addClass('bPic')
+            .insertAfter(img).append(img)
+          }
+    });
+SyntaxHighlighter.autoloader(
+	'applescript			/jslib/syntaxhighlighter/scripts/shBrushAppleScript.js',
+	'actionscript3 as3		/jslib/syntaxhighlighter/scripts/shBrushAS3.js',
+	'bash shell				/jslib/syntaxhighlighter/scripts/shBrushBash.js',
+	'coldfusion cf			/jslib/syntaxhighlighter/scripts/shBrushColdFusion.js',
+	'cpp c					/jslib/syntaxhighlighter/scripts/shBrushCpp.js',
+	'obj-c objc				/jslib/syntaxhighlighter/scripts/shBrushObjC.js',
+	'c# c-sharp csharp		/jslib/syntaxhighlighter/scripts/shBrushCSharp.js',
+	'css					/jslib/syntaxhighlighter/scripts/shBrushCss.js',
+	'delphi pascal			/jslib/syntaxhighlighter/scripts/shBrushDelphi.js',
+	'diff patch pas			/jslib/syntaxhighlighter/scripts/shBrushDiff.js',
+	'erl erlang				/jslib/syntaxhighlighter/scripts/shBrushErlang.js',
+	'groovy					/jslib/syntaxhighlighter/scripts/shBrushGroovy.js',
+	'haxe hx				/jslib/syntaxhighlighter/scripts/shBrushHaxe.js',
+	'java					/jslib/syntaxhighlighter/scripts/shBrushJava.js',
+	'jfx javafx				/jslib/syntaxhighlighter/scripts/shBrushJavaFX.js',
+	'js jscript javascript	/jslib/syntaxhighlighter/scripts/shBrushJScript.js',
+	'perl pl				/jslib/syntaxhighlighter/scripts/shBrushPerl.js',
+	'php					/jslib/syntaxhighlighter/scripts/shBrushPhp.js',
+	'text plain				/jslib/syntaxhighlighter/scripts/shBrushPlain.js',
+	'py python				/jslib/syntaxhighlighter/scripts/shBrushPython.js',
+	'ruby rails ror rb		/jslib/syntaxhighlighter/scripts/shBrushRuby.js',
+	'scala					/jslib/syntaxhighlighter/scripts/shBrushScala.js',
+	'sql					/jslib/syntaxhighlighter/scripts/shBrushSql.js',
+	'vb vbnet				/jslib/syntaxhighlighter/scripts/shBrushVb.js',
+	'ps powershell			/jslib/syntaxhighlighter/scripts/shBrushPowerShell.js',
+	'xml xhtml xslt html	/jslib/syntaxhighlighter/scripts/shBrushXml.js'
+);
+SyntaxHighlighter.all();
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/a_002.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/f.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u480030_0"></div>
+<div id="tongji">
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/tongji.js"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/stat_002.php" language="JavaScript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=1585378" target="_blank" title="站长统计">站长统计</a><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/stat_003.php" language="JavaScript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/core_002.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=4180674" target="_blank" title="站长统计">站长统计</a><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/stat.php" language="JavaScript"></script><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/core_003.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=5488963" target="_blank" title="站长统计">站长统计</a><script src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/i.js" type="text/javascript"></script>
+<script type="text/javascript" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/pl.html"></script>
+</div>
+<script>
+(function(){
+var appid = 'cyrHH3dwi',
+conf = 'prod_1dc5dc80970106099d43fe242b7465fc';
+var doc = document,
+s = doc.createElement('script'),
+h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+s.type = 'text/javascript';
+s.charset = 'utf-8';
+s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
+h.insertBefore(s,h.firstChild);
+window.SCS_NO_IFRAME = true;
+})();
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<script type="text/javascript" charset="utf-8" src="php%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0call_user_func%E5%92%8Ccall_user_func_array%E8%AF%A6%E8%A7%A3_php%E6%8A%80%E5%B7%A7_%E8%84%9A%E6%9C%AC%E4%B9%8B%E5%AE%B6_files/a.js"></script>
+
+
+
+</div></body></html>
+<!-- published at 2015-12-28 21:09:36By dxycms qq:461478385  -->

@@ -1,0 +1,66 @@
+<!DOCTYPE=html>
+
+<html lang="zh-cn">
+
+	<head>
+		<metadata charset="utf-8"/>
+		<script type="text/javascript">
+
+		var address = "ws://192.168.1.166:8080";
+		// var address = "ws://echo.webSocket.org";
+		// var address = "ws://127.0.0.1:8080";
+		var ws
+
+			function load(){
+				ws = new WebSocket(address);
+				ws.onopen = function(){
+
+					document.querySelector("#ret").innerHTML = "hand success";
+				};
+				ws.onerror = function(){
+	   				 document.querySelector("#ret").innerHTML = "error";
+				};
+
+				ws.onmessage = function(evt){
+					// document.querySelector("#ret").innerHTML = evt.data;
+					showInfo(evt.data);
+				}
+
+				ws.onclose = function(){
+					document.querySelector("#ret").innerHTML = "socket closed";
+					ws.close();
+					ws = new WebSocket(address);
+				}
+			}
+
+			function _unload(){
+				if(ws){
+					ws.close();
+				}
+			}
+			function sendmsg(){
+
+				var m = document.querySelector("#m").value;
+				// document.querySelector("#ret").innerHTML = "send : " + m;
+				if (ws) {
+					ws.send(m);
+				}
+			}
+
+			function showInfo(m){
+				var o = document.querySelector("#tf").innerHTML;
+				document.querySelector("#tf").innerHTML = o + "<br>" + m;
+
+			}
+		</script>
+	</head>
+
+	<body onload="load()" unload="_unload()">
+
+		<span id="ret">123456789</span>
+		<input type="test" id="m">
+		<input type="button" onclick="sendmsg()">
+		<span id="tf"></span>
+	</body>
+
+</html>

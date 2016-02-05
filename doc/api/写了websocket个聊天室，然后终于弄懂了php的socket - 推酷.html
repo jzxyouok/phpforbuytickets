@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<!--
+ ______________ 
+< TUICOOL.COM >
+ -------------- 
+        \   ^__^
+         \  (**)\__$__$__
+            (__)\       )\/\
+             U  ||------|
+                ||     ||
+-->
+<html><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="authenticity_token" name="csrf-param">
+<meta content="k+egW4QOmOXEK9tqHrp38legUgw+iN+/Ic+OBpmq2FE=" name="csrf-token">
+    <title>
+            写了websocket个聊天室，然后终于弄懂了php的socket - 推酷
+   </title>
+    <meta name="description" content="写了websocket个聊天室，然后终于弄懂了php的socket">
+  <link rel="shortcut icon" href="http://static0.tuicool.com/favicon.ico" type="image/x-icon">
+  <link href="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/application-f45ecdb2b2d75ba2b151c44458980876.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/font-awesome.css" rel="stylesheet">
+  <script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/ca-pub-7054762349007490.js"></script><script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/acom.js" async="" type="text/javascript"></script><script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/application-8629c2105229c8b87cdabc146cce0272.js" type="text/javascript"></script>
+
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="http://assets.tuicool.com/assets/font-awesome-ie7.min.css">
+  <![endif]--> 
+    <script type="text/javascript" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/tip.js"></script>
+  
+  <script type="text/javascript" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/m.js"></script>
+<script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/ds.js"></script>
+<script type="text/javascript" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/spin.js"></script><style type="text/css"></style>
+<link rel="stylesheet" href="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/github.css">
+
+<script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/share.js"></script><link href="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/share_style1_24.css" rel="stylesheet"></head>
+<body class="  pace-done"><div style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;" id="BAIDU_DUP_fp_wrapper"><iframe style="width: 0px; height: 0px; visibility: hidden; display: none;" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/o.html" id="BAIDU_DUP_fp_iframe"></iframe></div><div class="pace  pace-inactive"><div data-progress="99" data-progress-text="100%" style="transform: translate3d(100%, 0px, 0px);" class="pace-progress">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+  
+  <div id="header" class="navbar-fixed-top">
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+          </a>
+          <a href="http://www.tuicool.com/" class="brand">推酷</a>        
+        <nav class="nav-collapse collapse">
+            <ul class="nav navbar primary-nav">                            
+              <li class="active">
+                <a href="http://www.tuicool.com/ah">
+                  文章
+                </a>
+              </li>              
+              <li class="">
+                <a href="http://www.tuicool.com/sites/hot">
+                  站点
+                </a>
+              </li>
+              <li class="">
+                <a href="http://www.tuicool.com/topics">
+                  主题
+                </a>
+              </li>
+              <li class="">
+                <a href="http://course.tuicool.com/">
+                  公开课
+                </a>
+              </li>
+              <li class="">
+                <a href="http://huodong.tuicool.com/">
+                  活动
+                </a>
+              </li>
+              <li class="">
+                <a href="http://www.tuicool.com/mobile">
+                  客户端
+                    <sup style="font-size:0.8em;color: #16A085;">荐</sup>
+                </a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">周刊 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://www.tuicool.com/mags">编程狂人</a></li>
+                  <li><a href="http://www.tuicool.com/mags/design">设计匠艺</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/startup">创业周刊</a></li> 
+                  <li><a href="http://www.tuicool.com/mags/tech">科技周刊</a></li>      
+                  <li><a href="http://www.tuicool.com/mags/guru">Guru Weekly</a></li> 
+                  <li><a href="http://www.tuicool.com/articles/weekly">一周拾遗</a></li>                  
+                </ul>
+              </li>
+              
+              </ul>
+            <form class="navbar-search pull-left" action="http://www.tuicool.com/search">
+              <input class="search-query span2" name="kw" placeholder="搜索" type="text">
+            </form>
+            <ul class="nav pull-right">
+                <li><a href="http://www.tuicool.com/login">登录</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>   
+</div>
+  <div id="flash_container" class="noPrint">    
+  </div>
+  
+  <div class="container-fluid">  
+      
+<div class="row-fluid article_row_fluid">
+    <div class="span8 contant article_detail_bg">
+        <h1>写了websocket个聊天室，然后终于弄懂了php的socket</h1>
+        <div class="article_meta">
+            <div style="margin-bottom: 5px;">
+            <span class="timestamp">时间&nbsp;2014-02-24 23:38:27
+            </span>
+            <span class="from">
+                <i class="icon-globe"></i>
+                    <a class="cut cut28 from" href="http://www.tuicool.com/sites/IBJJZz" target="_blank">青梅煮酒
+                    </a>
+            </span>
+            </div>
+            <div class="source">
+                <i style="float:left;">原文</i>&nbsp; 
+                <a class="cut cut70" href="http://www.jnecw.com/p/1523?utm_source=tuicool&amp;utm_medium=referral" style="display:inline-block;">http://www.jnecw.com/p/1523</a>
+            </div>
+            <div>
+                <span>主题</span>
+                <a href="http://www.tuicool.com/topics/11100081" target="_blank">
+                    <span class="new-label">Socket</span>
+                </a>
+                <a href="http://www.tuicool.com/topics/11060032" target="_blank">
+                    <span class="new-label">WebSocket</span>
+                </a>
+                <a href="http://www.tuicool.com/topics/11120000" target="_blank">
+                    <span class="new-label">PHP</span>
+                </a>
+            </div>
+        </div>
+        <div class="article_body" id="nei">
+            <div>
+  <p>经朋友推荐去一家手游公司面试，原谅我不厚道的只是好奇手游公司到底是啥样的才去的。工作虽然没找到，但是跟他们的技术总监套近乎聊了几乎一晚
+上，受益良多，知道了运营多个手游大体需要的技术，当然还是厚道的不爆料了。面试中被问及socket和多线程编程，对这两个知识点完全是空白，回来果断
+开始研究。还是那句话，不懂裁缝的厨师不是好司机。何况这两个知识也在前端开发的范畴之内。</p>
+  <p>对我来说最快的学习途径是实践，所以找两个东西来练手。一个是websocket一个是webwoker，今天先说第一个。</p>
+  <p>要理解socket就要先理解http和tcp的区别，简单说就是一个是短链，一个是长链，一个是去服务器拉数据，一个是服务器可以主动推数据。</p>
+  <p>而socket就是应用层与TCP/IP协议族通信的中间软件抽象层，它是一组接口。在设计模式中，Socket其实就是一个门面模式，它把复
+杂的TCP/IP协议族隐藏在Socket接口后面，对用户来说，一组简单的接口就是全部，让Socket去组织数据，以符合指定的协议。-来自网络。</p>
+  <p>那么如何用php+js做到服务器推呢？</p>
+  <h2>客户端</h2>
+  <p>客户端非常简单，利用现代浏览器的WebSocket API，这里介绍的很详细:http://msdn.microsoft.com/zh-cn/library/ie/hh673567</p>
+  <p>核心代码：</p>
+  <div>
+    <span>JAVASCRIPT</span>
+    <div>
+      <table>
+        <tbody><tr>
+          <td>
+            <pre class="prettyprint undefined">1
+2
+3
+4
+5</pre>
+          </td>
+          <td>
+            <pre class="prettyprint javascript"><span style="color: #000066; font-weight: bold;"><span class="keyword">var</span></span> wsServer <span style="color: #339933;">=</span> <span style="color: #D14;"><span class="string">'ws://127.0.0.1:8080'</span></span><span style="color: #339933;">;</span> 
+<span style="color: #000066; font-weight: bold;"><span class="keyword">var</span></span> ws <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;"><span class="keyword">new</span></span> WebSocket<span style="color: #009900;">(</span>wsServer<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+ws.<span style="color: #0F6D3F;">onmessage</span> <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;"><span class="function"><span class="keyword">function</span></span></span><span class="function"> <span style="color: #009900;"><span class="params">(</span></span><span class="params">evt<span style="color: #009900;">)</span></span><span style="color: #009900;"></span> <span style="color: #009900;">{</span></span><span style="color: #009900;"></span> 
+    <span style="color: #000066; font-weight: bold;"><span class="keyword">do</span></span> sth
+<span style="color: #009900;">}</span><span style="color: #339933;">;</span></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+  <p>前两行会向指定服务器发送一个握手请求，如果服务器返回合法的http头，则握手成功，之后可通过监听onmessage事件来处理服务器发来的消息。还有很多其他事件可监听，见前面的url。</p>
+  <h2>服务器</h2>
+  <h3>思路</h3>
+  <p>难点是服务器，没有了apache和nginx这些http服务器在前面顶着，只用php该怎么写？</p>
+  <p>
+    这里有个教程讲的很深入    <a href="http://blog.csdn.net/shagoo/article/details/6396089" target="_blank" rel="nofollow,noindex">http://blog.csdn.net/shagoo/article/details/6396089</a>
+  </p>
+  <p>写之前捋一捋思路：</p>
+  <p>
+    1 监听：首先要挂起一个进程来监听来自客户端的请求    <br>
+    2 握手：对于第一次合法的请求，发送合法的header回去    <br>
+    3 保持连接：有新消息到了就广播出去。直到客户端断开    <br>
+    4 接受另一个请求，重复2和3  </p>
+  <p>代码如下：</p>
+  <div>
+    <span>PHP</span>
+    <div>
+      <table>
+        <tbody><tr>
+          <td>
+            <pre class="prettyprint undefined">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73</pre>
+          </td>
+          <td>
+            <pre class="prettyprint php"><span style="color: #000000; font-weight: bold;"><span class="keyword">public</span></span> <span style="color: #000000; font-weight: bold;"><span class="function"><span class="keyword">function</span></span></span><span class="function"> <span class="title">start_server</span><span style="color: #009900;"><span class="params">(</span></span><span class="params"><span style="color: #009900;">)</span></span><span style="color: #009900;"></span> <span style="color: #009900;">{</span></span><span style="color: #009900;"></span>
+    <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span> <span style="color: #339933;">=</span> <span style="color: #990000;">socket_create</span><span style="color: #009900;">(</span>AF_INET<span style="color: #339933;">,</span> SOCK_STREAM<span style="color: #339933;">,</span> SOL_TCP<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #999;"><span class="comment">//允许使用本地地址</span></span>
+    <span style="color: #990000;">socket_set_option</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span><span style="color: #339933;">,</span> SOL_SOCKET<span style="color: #339933;">,</span> SO_REUSEADDR<span style="color: #339933;">,</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">TRUE</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span> 
+    <span style="color: #990000;">socket_bind</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">host</span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">port</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #999;"><span class="comment">//最多10个人连接，超过的客户端连接会返回WSAECONNREFUSED错误</span></span>
+    <span style="color: #990000;">socket_listen</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">maxuser</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span> 
+    <span style="font-weight: bold;"><span class="keyword">while</span></span><span style="color: #009900;">(</span><span style="color: #009900; font-weight: bold;"><span class="keyword">TRUE</span></span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+        <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">cycle</span> <span style="color: #339933;">=</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #339933;">;</span>
+        <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">cycle</span><span style="color: #009900;">[</span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span><span style="color: #339933;">;</span>
+        <span style="color: #999;"><span class="comment">//阻塞用，有新连接时才会结束</span></span>
+        <span style="color: #990000;">socket_select</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">cycle</span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$write</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$except</span></span><span style="color: #339933;">,</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">null</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="font-weight: bold;"><span class="keyword">foreach</span></span> <span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">cycle</span> <span style="font-weight: bold;"><span class="keyword">as</span></span> <span style="color: #333;"><span class="variable">$k</span></span> <span style="color: #339933;">=&gt;</span> <span style="color: #333;"><span class="variable">$v</span></span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+            <span style="font-weight: bold;"><span class="keyword">if</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span> <span style="color: #339933;">===</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">socket</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                <span style="font-weight: bold;"><span class="keyword">if</span></span> <span style="color: #009900;">(</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$accept</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">socket_accept</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span> <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;"><span class="number">0</span></span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                    <span style="font-weight: bold;"><span class="keyword">continue</span></span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">}</span>
+                <span style="color: #999;"><span class="comment">//如果请求来自监听端口那个套接字，则创建一个新的套接字用于通信</span></span>
+                <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">add_accept</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+                <span style="font-weight: bold;"><span class="keyword">continue</span></span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">}</span>
+            <span style="color: #333;"><span class="variable">$index</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">array_search</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+            <span style="font-weight: bold;"><span class="keyword">if</span></span> <span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$index</span></span> <span style="color: #339933;">===</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">NULL</span></span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                <span style="font-weight: bold;"><span class="keyword">continue</span></span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">}</span>
+            <span style="font-weight: bold;"><span class="keyword">if</span></span> <span style="color: #009900;">(</span><span style="color: #339933;">!@</span><span style="color: #990000;">socket_recv</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$data</span></span><span style="color: #339933;">,</span> <span style="color: #cc66cc;"><span class="number">1024</span></span><span style="color: #339933;">,</span> <span style="color: #cc66cc;"><span class="number">0</span></span><span style="color: #009900;">)</span> <span style="color: #339933;">||</span> <span style="color: #339933;">!</span><span style="color: #333;"><span class="variable">$data</span></span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span><span style="color: #999;"><span class="comment">//没消息的socket就跳过</span></span>
+                <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">close</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+                <span style="font-weight: bold;"><span class="keyword">continue</span></span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">}</span>
+            <span style="font-weight: bold;"><span class="keyword">if</span></span> <span style="color: #009900;">(</span><span style="color: #339933;">!</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">isHand</span><span style="color: #009900;">[</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">upgrade</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$v</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$data</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+                <span style="font-weight: bold;"><span class="keyword">if</span></span><span style="color: #009900;">(</span><span style="color: #339933;">!</span><span style="color: #990000;"><span class="keyword">empty</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'add'</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                    <span style="color: #990000;">call_user_func_array</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'add'</span></span><span style="color: #009900;">]</span><span style="color: #339933;">,</span> <span style="color: #990000;"><span class="keyword">array</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">}</span>
+                <span style="font-weight: bold;"><span class="keyword">continue</span></span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">}</span>
+            <span style="color: #333;"><span class="variable">$data</span></span> <span style="color: #339933;">=</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">decode</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$data</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+            <span style="font-weight: bold;"><span class="keyword">if</span></span><span style="color: #009900;">(</span><span style="color: #339933;">!</span><span style="color: #990000;"><span class="keyword">empty</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'send'</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+                <span style="color: #990000;">call_user_func_array</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'send'</span></span><span style="color: #009900;">]</span><span style="color: #339933;">,</span> <span style="color: #990000;"><span class="keyword">array</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$data</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$index</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">}</span>
+        <span style="color: #009900;">}</span>
+        <span style="color: #990000;">sleep</span><span style="color: #009900;">(</span><span style="color: #cc66cc;"><span class="number">1</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span>
+<span style="color: #999;"><span class="comment">//增加一个初次连接的用户</span></span>
+<span style="color: #000000; font-weight: bold;"><span class="keyword">private</span></span> <span style="color: #000000; font-weight: bold;"><span class="function"><span class="keyword">function</span></span></span><span class="function"> <span class="title">add_accept</span><span style="color: #009900;"><span class="params">(</span></span><span class="params"><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #009900;">)</span></span><span style="color: #009900;"></span> <span style="color: #009900;">{</span></span><span style="color: #009900;"></span>
+    <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #009900;">[</span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> <span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #339933;">;</span>
+    <span style="color: #333;"><span class="variable">$index</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">array_keys</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #333;"><span class="variable">$index</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">end</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">isHand</span><span style="color: #009900;">[</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">FALSE</span></span><span style="color: #339933;">;</span>
+<span style="color: #009900;">}</span>
+<span style="color: #999;"><span class="comment">//关闭一个连接</span></span>
+<span style="color: #000000; font-weight: bold;"><span class="keyword">private</span></span> <span style="color: #000000; font-weight: bold;"><span class="function"><span class="keyword">function</span></span></span><span class="function"> <span class="title">close</span><span style="color: #009900;"><span class="params">(</span></span><span class="params"><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #009900;">)</span></span><span style="color: #009900;"></span> <span style="color: #009900;">{</span></span><span style="color: #009900;"></span>
+    <span style="color: #333;"><span class="variable">$index</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">array_search</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #990000;">socket_close</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #990000;"><span class="keyword">unset</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">accept</span><span style="color: #009900;">[</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #990000;"><span class="keyword">unset</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">isHand</span><span style="color: #009900;">[</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="font-weight: bold;"><span class="keyword">if</span></span><span style="color: #009900;">(</span><span style="color: #339933;">!</span><span style="color: #990000;"><span class="keyword">empty</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'close'</span></span><span style="color: #009900;">]</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+        <span style="color: #990000;">call_user_func_array</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #000000; font-weight: bold;">function</span><span style="color: #009900;">[</span><span style="color: #D14;"><span class="string">'close'</span></span><span style="color: #009900;">]</span><span style="color: #339933;">,</span> <span style="color: #990000;"><span class="keyword">array</span></span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$this</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span>
+<span style="color: #999;"><span class="comment">//响应升级协议</span></span>
+<span style="color: #000000; font-weight: bold;"><span class="keyword">private</span></span> <span style="color: #000000; font-weight: bold;"><span class="function"><span class="keyword">function</span></span></span><span class="function"> <span class="title">upgrade</span><span style="color: #009900;"><span class="params">(</span></span><span class="params"><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$data</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">)</span></span><span style="color: #009900;"></span> <span style="color: #009900;">{</span></span><span style="color: #009900;"></span>
+    <span style="font-weight: bold;"><span class="keyword">if</span></span> <span style="color: #009900;">(</span><span style="color: #990000;">preg_match</span><span style="color: #009900;">(</span><span style="color: #D14;"><span class="string">"/Sec-WebSocket-Key: (.*)<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>/"</span></span><span style="color: #339933;">,</span><span style="color: #333;"><span class="variable">$data</span></span><span style="color: #339933;">,</span><span style="color: #333;"><span class="variable">$match</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+        <span style="color: #333;"><span class="variable">$key</span></span> <span style="color: #339933;">=</span> <span style="color: #990000;">base64_encode</span><span style="color: #009900;">(</span><span style="color: #990000;">sha1</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$match</span></span><span style="color: #009900;">[</span><span style="color: #cc66cc;"><span class="number">1</span></span><span style="color: #009900;">]</span> <span style="color: #339933;">.</span> <span style="color: #D14;"><span class="string">'258EAFA5-E914-47DA-95CA-C5AB0DC85B11'</span></span><span style="color: #339933;">,</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">true</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #333;"><span class="variable">$upgrade</span></span>  <span style="color: #339933;">=</span> <span style="color: #D14;"><span class="string">"HTTP/1.1 101 Switching Protocol<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>"</span></span> <span style="color: #339933;">.</span>
+                <span style="color: #D14;"><span class="string">"Upgrade: websocket<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>"</span></span> <span style="color: #339933;">.</span>
+                <span style="color: #D14;"><span class="string">"Connection: Upgrade<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>"</span></span> <span style="color: #339933;">.</span>
+                <span style="color: #D14;"><span class="string">"Sec-WebSocket-Accept: "</span></span> <span style="color: #339933;">.</span> <span style="color: #333;"><span class="variable">$key</span></span> <span style="color: #339933;">.</span> <span style="color: #D14;"><span class="string">"<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>"</span></span><span style="color: #339933;">;</span>  <span style="color: #999;"><span class="comment">//必须以两个回车结尾</span></span>
+        <span style="color: #990000;">socket_write</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$accept</span></span><span style="color: #339933;">,</span> <span style="color: #333;"><span class="variable">$upgrade</span></span><span style="color: #339933;">,</span> <span style="color: #990000;">strlen</span><span style="color: #009900;">(</span><span style="color: #333;"><span class="variable">$upgrade</span></span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #333;"><span class="variable">$this</span></span><span style="color: #339933;">-&gt;</span><span style="color: #0F6D3F;">isHand</span><span style="color: #009900;">[</span><span style="color: #333;"><span class="variable">$index</span></span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;"><span class="keyword">TRUE</span></span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+  <p>关键地方有那么几个，一是while(true)挂起进程，不然执行一次后进程就退出了。二是socket_select和socket_accept函数的使用。三是客户端第一次请求时握手。</p>
+  <h3>socket_select</h3>
+  <p>这个函数是同时接受多个连接的关键，我的理解它是为了阻塞程序继续往下执行。</p>
+  <p>socket_select ($sockets, $write = NULL, $except = NULL, NULL);</p>
+  <p>
+    $sockets可以理解为一个数组，这个数组中存放的是文件描述符。当它有变化（就是有新消息到或者有客户端连接/断开）时，socket_select函数才会返回，继续往下执行。    <br>
+    $write是监听是否有客户端写数据，传入NULL是不关心是否有写变化。    <br>
+    $except是$sockets里面要被排除的元素，传入NULL是”监听”全部。    <br>
+    最后一个参数是超时时间    <br>
+    如果为0：则立即结束    <br>
+    如果为n&gt;1: 则最多在n秒后结束，如遇某一个连接有新动态，则提前返回    <br>
+    如果为null：如遇某一个连接有新动态，则返回  </p>
+  <h3>socket_accept</h3>
+  <p>此函数接受唯一参数，即前面socket_create创建的socket文件(句柄)。返回一个新的资源，或者FALSE。本函数将会通知
+socket_listen()，将会传入一个连接的socket资源。一旦成功建立socket连接，将会返回一个新的socket资源，用于通信。如
+果有多个socket在队列中，那么将会先处理第一个。关键就是这里：如果没有socket连接，那么本函数将会等待，直到有新socket进来。</p>
+  <p>如果前面不用socket_select在没有socket的时候阻塞住程序，那么就卡在这里永远无法结束了。</p>
+  <p>后面的流程就很清晰了，当有一个新的客户端请求到达，用socket_accept创建一个资源，并加入到$this-&gt;accept连
+接池里面。并将它的标示isHand设为false，那么下次循环(因为$this-&gt;cycle[] = 
+$this-&gt;socket;$this-&gt;cycle有变化，所以socket_select会返回)的时候就会执行upgrade握手。
+然后等待它的新消息即可。</p>
+  <p>程序经调试可以成功运行，php5.3+websocket13。有兴趣的同学可以下载：文件地址</p>
+</div>
+
+        </div>
+        <div class="article_social">
+         <div class="article_like">
+    <div class="circle circle-like" id="my_zan" data_id="iEV3Aje">
+    </div>
+</div>
+        <div id="share_weixin_image">
+            <img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/qrcode.png" height="100px" width="100px">
+        </div>
+<div class="article_share_fav">
+    <div class="share" id="ckepop">
+        <span>分享</span>
+        <button class="share_weibo" id="share_weibo_id" title="分享到新浪微博"></button>
+        <button class="share_qq" id="share_qq_id" title="分享到QQ空间"></button>
+        <button class="share_weixin" id="share_weixin_id"></button>
+    </div>
+    <div class="fav_correct">
+        <button id="my_fav" data_id="iEV3Aje">
+            <i class="icon icon-star-empty"></i> <span id="fav_tip">收藏</span>
+        </button>
+        <button id="article-correct" data_id="iEV3Aje">
+            <i class="icon icon-warning-sign"></i>
+            <span>纠错</span>
+        </button>
+    </div>
+</div>
+<script type="text/javascript">
+$("#share_weibo_id").click( function() {
+   window.open("http://share.baidu.com/s?type=text&searchPic=0&sign=on&to=tsina&url=http://www.tuicool.com/articles/iEV3Aje&title=%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket++%28%E5%88%86%E4%BA%AB%E8%87%AA+%40%E6%8E%A8%E9%85%B7%E7%BD%91%29&key=3113829255");
+});
+$("#share_qq_id").click( function() {
+   window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.tuicool.com/articles/iEV3Aje&title=%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket&desc=&summary=&site=");
+});
+$("#share_weixin_id").click( function() {
+  $("#share_weixin_image").toggle();
+});
+</script>
+
+
+            <div class="bottom_ad huodong-detail-ad-banner clearfix">
+            <script type="text/javascript">
+    var cpro_id = "u1665123";
+</script>
+<script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/c.js" type="text/javascript"></script><div id="BAIDU_EXP_UNION__wrapper_u1665123_0"><iframe id="iframeu1665123_0" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/acom.html" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="90" align="center,center" width="580"></iframe></div>
+
+            </div>
+        </div>
+        <div id="site_articles" style="clear:both;">
+              <div class="article-part-title">
+                <span>推荐文章</span>
+              </div>
+          <ul class="side_article_list">
+                <li class="side_article_list_item">
+                    1.<a href="http://www.tuicool.com/articles/VN7juqv" target="_blank" title="做一个“代码模块”交易的网站">
+                    做一个“代码模块”交易的网站
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    2.<a href="http://www.tuicool.com/articles/ErQFr23" target="_blank" title="yii2开发后记">
+                    yii2开发后记
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    3.<a href="http://www.tuicool.com/articles/yMNBBvf" target="_blank" title="PHP 设计模式系列 —— 状态模式（State）">
+                    PHP 设计模式系列 —— 状态模式（State）
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    4.<a href="http://www.tuicool.com/articles/QNBbIrz" target="_blank" title="用php实现一个敏感词过滤功能">
+                    用php实现一个敏感词过滤功能
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    5.<a href="http://www.tuicool.com/articles/ZrUB7ju" target="_blank" title="codility之Brackets">
+                    codility之Brackets
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    6.<a href="http://www.tuicool.com/articles/QJFVFzy" target="_blank" title="php调试利器之phpdbg">
+                    php调试利器之phpdbg
+                    </a>
+                </li>
+          </ul>
+        </div>
+        <div id="kan_articles"> <div class="article-part-title"> <span>相关推刊</span></div><ul class="kan-list">          <li class="kan-item">            <a href="http://www.tuicool.com/kans/3186712456" target="_blank" class="kan-item-head">              <small>刊主：咕咚的咚不是东</small>              <img class="kan-cover" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/default_kan_cover.png">            </a>            <span class="kan-detail">              <a href="http://www.tuicool.com/kans/3186712456" target="_blank">《默认推刊》</a>              <i class="kan-num">1</i>            </span>          </li>                  <li class="kan-item">            <a href="http://www.tuicool.com/kans/2255053012" target="_blank" class="kan-item-head">              <small>刊主：书山尿童子</small>              <img class="kan-cover" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/ru2mM3a.png">            </a>            <span class="kan-detail">              <a href="http://www.tuicool.com/kans/2255053012" target="_blank">《默认推刊》</a>              <i class="kan-num">4</i>            </span>          </li>                  <li class="kan-item">            <a href="http://www.tuicool.com/kans/4109577360" target="_blank" class="kan-item-head">              <small>刊主：云袭</small>              <img class="kan-cover" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/yUZviq.png">            </a>            <span class="kan-detail">              <a href="http://www.tuicool.com/kans/4109577360" target="_blank">《php》</a>              <i class="kan-num">153</i>            </span>          </li>        </ul><i class="clearfix"></i></div>
+        <div id="article_weibo" style="display:none;">
+            <div class="article-part-title">
+                <span>相关微博</span>
+                <sub>
+                    <a href="http://www.tuicool.com/articles/weibo_list/iEV3Aje" target="_blank">(<i id="weibo_num"></i>)</a> 
+               </sub>
+            </div>
+            <div class="related-weibo-list"></div>
+        </div>
+        <div class="comments">
+    <div class="comments-area">
+    <div class="comments-header">
+        <h5>我来评几句</h5>
+        <div class="alert comment-alert alert-error" style="display:none;">
+            错误
+        </div>
+            <textarea cols="60" rows="5" id="comment-body" placeholder="请输入评论内容..." style="resize: none;"></textarea>
+            <span class="btn btn-medium btn-submit" id="comment-submit">登录后评论</span>
+        <p style="margin-top: 5px;margin-left:10px;">
+            已发表评论数(<span class="comment_cnt">0</span>)
+        </p>
+    </div>
+    <div class="comments-list">
+        <div class="empty-cmts alert alert-success" style="display:none;">
+            没有更多评论了^^
+        </div>
+    </div>
+    <div class="more-comments" style="display:none;">
+        <a href="">更多评论</a>
+    </div>
+    <div class="load-fail" style="display:none;">
+        评论加载失败，<a href="javascript:reload_comments('iEV3Aje',1,0,-1);">重新加载</a>
+    </div>
+    </div>
+</div>
+
+    </div>
+        <div class="span4 article_right_side">
+            <div class="right_top">
+    <div class="article_related_site article_detail_bg">
+    <h4 class="article-part-title">相关站点</h4>
+    <div class="article_related_site_body clearfix">
+        <div class="logo">
+            <img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/IBJJZz.png">
+        </div>
+        <div class="name">
+            <div>
+                <a href="http://www.tuicool.com/sites/IBJJZz" target="_blank"> 青梅煮酒</a>
+            </div>
+            <div>
+                    <input class="btn btn-success right_site_follow" value="+&nbsp;订阅" id="my_follow" data_id="IBJJZz" type="button">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="right-ad">
+      <a href="https://www.teambition.com/?utm_source=tuicool&amp;utm_medium=banner01" target="_blank"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/teambition300.jpg"></a>
+
+</div>
+<div class="right-ad" style="margin-top: 8px">
+      <a href="http://click.aliyun.com/m/3403/" target="_blank"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/aliyun300.jpg"></a>
+
+</div>
+<div class="right-ad" style="margin-top: 8px">
+      <a href="http://home.leangoo.com/?f=tc" target="_blank"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/leangoo300.jpg"></a>
+
+</div>
+<div class="right-ad" style="margin-top: 8px">
+      <a href="http://yacebao.com/?utm_source=web&amp;utm_medium=banner&amp;utm_campaign=tuicool" target="_blank"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/yunzhihui300.jpg"></a>
+
+</div>
+<div id="right_site_articles" class="article_detail_bg">
+    <div class="article-part-title">
+        <span>热门文章</span>
+    </div>
+    <ul class="side_article_list">
+        <li class="side_article_list_item">
+            1.<a href="http://www.tuicool.com/articles/VN7juqv" target="_blank" title="做一个“代码模块”交易的网站"> 做一个“代码模块”交易的网站 </a>
+        </li>
+        <li class="side_article_list_item">
+            2.<a href="http://www.tuicool.com/articles/fyMJvur" target="_blank" title="给 PHP 开发者的编程指南－第一部分: 降低复杂程度"> 给 PHP 开发者的编程指南－第一部分: 降低复杂程度 </a>
+        </li>
+        <li class="side_article_list_item">
+            3.<a href="http://www.tuicool.com/articles/ErQFr23" target="_blank" title="yii2开发后记"> yii2开发后记 </a>
+        </li>
+        <li class="side_article_list_item">
+            4.<a href="http://www.tuicool.com/articles/MvQjM36" target="_blank" title="【译】更快的方式实现PHP数组去重"> 【译】更快的方式实现PHP数组去重 </a>
+        </li>
+        <li class="side_article_list_item">
+            5.<a href="http://www.tuicool.com/articles/NFvyQzr" target="_blank" title="谁是 2015 年最流行的编程语言？"> 谁是 2015 年最流行的编程语言？ </a>
+        </li>
+        <li class="side_article_list_item">
+            6.<a href="http://www.tuicool.com/articles/yMNBBvf" target="_blank" title="PHP 设计模式系列 —— 状态模式（State）"> PHP 设计模式系列 —— 状态模式（State） </a>
+        </li>
+    </ul>
+</div>
+</div>
+
+<div style="position: fixed; top: 50px;" class="operate_zone">
+    <div class="container-body share-body">
+        <div class="article-part-title">
+            <span>分享本文</span>
+        </div>
+        <div class="share_zone">
+    <div data-bd-bind="1452822591579" class="bdsharebuttonbox bdshare-button-style1-24"> 
+         <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+     </div>
+    <script>
+        window._bd_share_config = {
+            "common" : {
+                "bdSnsKey" : {
+                    "tsina" : "3113829255",
+                    "tqq" : "801536792"
+                },
+                "bdText" : "写了websocket个聊天室，然后终于弄懂了php的socket (分享自 @推酷网)",
+                "bdMini" : "2",
+                "bdMiniList" : false,
+                "bdPic" : "",
+                "bdStyle" : "1",
+                "bdSize" : "24"
+            },
+            "share" : {}
+        };
+        with (document)
+        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    </script>
+</div>
+    </div>
+        <div class="frd_pos">
+        <script async="" src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/adsbygoogle.js"></script>
+<ins data-adsbygoogle-status="done" class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-7054762349007490" data-ad-slot="5705695566"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" frameborder="0" height="250" width="300"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+</div>
+         </div>
+</div>
+
+<div class="read-later-alert">
+</div>
+<div>
+   <a href="#add-article-to-kan" id="add-article-to-kan-btn" class="btn" data-toggle="modal" style="display:none;">添加到推刊</a>
+   <!-- add_article to kan -->
+<div id="add-article-to-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <span class="add-title">收藏到推刊</span>
+    <a href="#new-kan" class="btn pull-right" data-toggle="modal">创建推刊</a>
+    <i class="clearfix"></i>
+  </div>
+  <div class="modal-body">
+    <ul id="add-kan-list">
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <input value="iEV3Aje" class="article-id" type="hidden"> 
+    <button class="btn btn-primary pull-left add-to-btn">  收 藏  </button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+  </div>
+</div>
+<div class="add-article-to-kan-alert">
+  已收藏到推刊！
+</div>
+
+   <div id="new-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <input name="name" id="new-kan-name" placeholder="推刊名(必填)" required="" data-validation-required-message="请填写推刊名" type="text">
+    <span class="new-ness-name">请填写推刊名</span>
+    <br>
+    <textarea name="desc" id="desc" rows="6" placeholder="推刊描述"></textarea>
+    <span class="new-ness-desc">描述不能大于100个字符!</span>
+    <br>
+    权限设置：<input name="type" value="1" checked="checked" type="radio"> 公开
+    <input name="type" value="0" type="radio"> 仅自己可见
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary pull-left create-kan-btn" disabled="disabled">创建</button>
+    <button class="btn dismiss-new-kan" data-dismiss="modal" aria-hidden="true">取消</button>
+  </div>
+</div>
+
+
+</div>
+<div id="article-correct-modal" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <h3>文章纠错</h3>
+    </div>
+    <div class="modal-body">
+        <input value="iEV3Aje" id="article-correct-source" type="hidden">
+        <div>
+            <label for="article-correct-email">
+                邮箱地址
+            </label>
+            <input id="article-correct-email" class="input-large" type="email">
+        </div>
+        <div>
+            <label for="article-correct-select">
+                错误类型
+            </label>
+            <select id="article-correct-select">
+                <option selected="selected" value="正文不准确">正文不准确</option>
+                <option value="排版有问题">排版有问题</option>
+                <option value="没有分页内容">没有分页内容</option>
+                <option value="视频无法显示">视频无法显示</option>
+                <option value="图片无法显示">图片无法显示</option>
+            </select>
+        </div>
+        <div>
+            <label for="article-correct-other">
+                补充信息
+            </label>
+            <textarea id="article-correct-other" class="span6"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-right huodong_correct_submit" id="article-correct-submit">
+            &nbsp;&nbsp;提交&nbsp;&nbsp;
+        </button>
+    </div>
+</div>
+
+<style type="text/css">
+    .btn-large {
+        padding: 0;
+    }
+    .load-fail {
+        display: none;
+    }
+</style>
+<script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/highlight.js"></script>
+<script type="text/javascript">
+    $('table').each(function(i) {
+        var size = $(this).children().size();
+        if (size > 1) {
+            $(this).attr('class',"table table-bordered");
+        } else if (size == 1) {
+            var e11 = $(this).children(":first");
+            var e1 = e11[0];
+            var name = e1.nodeName.toLowerCase();
+            if ("tbody" == name) {
+                if (e11.children().size() > 1) {
+                     $(this).attr('class',"table table-bordered");
+                }
+            }
+        }
+    });
+            related_kan("iEV3Aje");
+        window.page = 0;
+        window.last = 0;    
+        window.first = true;
+        resize_article_image('#nei', 550);
+                load_comments("iEV3Aje",1,0,-1);
+                window.uid = -1;
+        open_add_article_to_kan("false");
+        async_do_zan_article(); 
+        $('pre').each(function(i, e) {
+            hljs.highlightBlock(e, "<span class='indent'>  </span>", false)
+        });
+       
+          
+       handle_follow_site("#my_follow","已订阅","+ 订阅");
+</script>
+
+
+  </div>
+
+    <div class="footer">
+    <div class="footer-inner">
+    <dl class="about-link site-link">
+        <dt>
+            网站相关
+        </dt>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/about">关于我们</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/mobile">移动应用</a>
+        </dd>
+        <dd>
+            <a target="_blank" href="http://www.tuicool.com/bbs/go/issues">建议反馈</a>
+        </dd>
+    </dl>
+    <dl class="site-link follow-link">
+        <dt>
+            关注我们
+        </dt>
+        <dd>
+            <a target="_blank" href="http://e.weibo.com/tuicool2012"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/weibo-32.png">推酷网</a>
+        </dd>
+        <dd><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/weixin-32.png">tuicool2012
+        </dd>
+    </dl>
+    <dl class="site-link links">
+        <dt>
+            友情链接
+        </dt>
+        <dd>
+                <a href="http://www.woshipm.com/" title="人人都是产品经理" target="_blank">人人都是产品经理</a>
+                <a href="http://www.moobuu.com/" title="魔部网" target="_blank">魔部网</a>
+                <a href="http://www.pm265.com/" title="PM256" target="_blank">PM256</a>
+                <a href="http://www.pintu360.com/" title="品途网" target="_blank">品途网</a>
+                <a href="http://www.yidonghua.com/" title="移动信息化" target="_blank">移动信息化</a>
+                <a href="http://www.snsiu.com/" title="行晓网" target="_blank">行晓网</a>
+                <a href="http://code4app.com/" title="Code4App" target="_blank">Code4App</a>
+                <a href="http://www.taskcity.com/" title="智城外包网" target="_blank">智城外包网</a>
+                <a href="http://blog.lamper.cn/" title="LAMP人" target="_blank">LAMP人</a>
+                <a href="http://www.apkway.com/forum.php" title="安卓航班网" target="_blank">安卓航班网</a>
+                <a href="http://www.huxiu.com/" title="虎嗅" target="_blank">虎嗅</a>
+                <a href="http://www.ycpai.com/" title="缘创派" target="_blank">缘创派</a>
+                <a href="http://www.iterduo.com/" title="IT耳朵" target="_blank">IT耳朵</a>
+                <a href="http://www.iresearch.cn/" title="艾瑞网" target="_blank">艾瑞网</a>
+                <a href="http://mediaworks.caixin.com/" title="创媒工场" target="_blank">创媒工场</a>
+                <a href="http://www.leiphone.com/" title="雷锋网" target="_blank">雷锋网</a>
+                <a href="http://www.managershare.com/" title="经理人分享" target="_blank">经理人分享</a>
+                <a href="http://www.shichangbu.com/" title="市场部网" target="_blank">市场部网</a>
+                <a href="http://www.ikanchai.com/" title="砍柴网" target="_blank">砍柴网</a>
+                <a href="http://www.cocoachina.com/" title="CocoaChina" target="_blank">CocoaChina</a>
+                <a href="http://www.ibeifeng.com/" title="北风网" target="_blank">北风网</a>
+                <a href="http://www.jiankongbao.com/" title="云智慧" target="_blank">云智慧</a>
+                <a href="http://www.wyzc.com/" title="我赢职场" target="_blank">我赢职场</a>
+                <a href="http://www.thebigdata.cn/" title="大数据时代" target="_blank">大数据时代</a>
+                <a href="http://www.qidic.com/" title="奇笛网" target="_blank">奇笛网</a>
+                <a href="http://www.cngulu.com/" title="咕噜网" target="_blank">咕噜网</a>
+                <a href="http://www.linuxdiyf.com/" title="红联linux" target="_blank">红联linux</a>
+                <a href="http://win10.ithome.com/" title="Win10之家" target="_blank">Win10之家</a>
+                <a href="http://www.niaogebiji.com/" title="鸟哥笔记" target="_blank">鸟哥笔记</a>
+                <a href="http://www.play.cn/" title="爱游戏" target="_blank">爱游戏</a>
+                <a href="http://www.investide.cn/" title="投资潮" target="_blank">投资潮</a>
+                <a href="http://www.31huiyi.com/" title="31会议网" target="_blank">31会议网</a>
+                <a href="https://www.jpush.cn/" title="极光推送" target="_blank">极光推送</a>
+                <a href="https://www.teambition.com/" title="Teambition" target="_blank">Teambition</a>
+                <a href="http://cn.cocos2d-x.org/" title="Cocos引擎中文官网" target="_blank">Cocos引擎中文官网</a>
+                <a href="http://www.guigu.org/" title="硅谷网" target="_blank">硅谷网</a>
+                <a href="https://home.leangoo.com/" title="leangoo" target="_blank">leangoo</a>
+            <a href="http://www.tuicool.com/links">更多链接&gt;&gt;</a>&nbsp;&nbsp;
+        </dd>
+    </dl>
+    <div class="clear"></div>
+    </div>
+</div>
+
+<div style="display:none;">
+   <script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/stat.php" language="JavaScript"></script><script src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=5541078" target="_blank" title="站长统计"><img src="%E5%86%99%E4%BA%86websocket%E4%B8%AA%E8%81%8A%E5%A4%A9%E5%AE%A4%EF%BC%8C%E7%84%B6%E5%90%8E%E7%BB%88%E4%BA%8E%E5%BC%84%E6%87%82%E4%BA%86php%E7%9A%84socket%20-%20%E6%8E%A8%E9%85%B7_files/pic.gif" hspace="0" border="0" vspace="0"></a>
+</div>
+
+
+
+
+<div style="display: block;" title="返回顶部" class="return"></div></body></html>
